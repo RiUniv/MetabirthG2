@@ -1,0 +1,171 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6497718157366915462
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2858271145177314790}
+  - component: {fileID: 5069364000749506367}
+  - component: {fileID: 5114328710022157857}
+  - component: {fileID: 6944015005593344472}
+  m_Layer: 0
+  m_Name: BattlePrivateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2858271145177314790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497718157366915462}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.22672, y: 0, z: 2.47085}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2458511717255811521}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5069364000749506367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497718157366915462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3977a5e65e72f4db4b85ddba10d48dd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.Item
+  id:
+    value: 14753447783064787877
+  itemName: 
+  size: {x: 0, y: 0, z: 0}
+--- !u!114 &5114328710022157857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497718157366915462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61061896c654489a41575fc291bf4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
+  sourceCodeAsset: {fileID: 0}
+  sourceCode: "$.onReceive((messageType, arg, sender) => {\r\n    if (messageType
+    === \"init\") {\r\n        $.setPlayerScript(arg);\n        $.state.targetPlayer
+    = arg;\r\n    }\r\n    if (messageType === \"Damaged\") {\r\n        $.sendSignalCompat(\"owner\", 
+    \"Damaged\");\n        $.setStateCompat(\"owner\",  \"playerhp\",arg);\r\n   
+    }\r\n}, { player: true });\n\n$.onUpdate((deltaTime) => {\n    let checkTimer
+    = $.state.checkTimer ?? 0;\n    checkTimer += deltaTime;\n\n    if (checkTimer
+    >= 10) {\n        CheckPlayerExistence();\n        checkTimer = 0;\n    }\n   
+    $.state.checkTimer = checkTimer;\n});\n\nfunction CheckPlayerExistence() {\n   
+    let target = $.state.targetPlayer;\n    \n    if (!target) return;\n\n    if
+    (!target.exists()) {\n        $.destroy(); // \u30A2\u30A4\u30C6\u30E0\u81EA\u8EAB\u3092\u7834\u68C4
+    \n    }\n}\r\n"
+--- !u!114 &6944015005593344472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497718157366915462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb59730322447a7a13c40b87493e196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.PlayerScript
+  sourceCodeAsset: {fileID: 0}
+  sourceCode: "const MaxHp = 100;\nlet hp = MaxHp;\nlet managerId =  _.sourceItemId;\n\n_.onReceive((messageType,
+    arg, sender) => {\n    if (messageType === \"damage\") {\n        hp -= arg.value;\n       
+    _.log(\"\u6B8B\u308AHP: \" + hp);\n\n        if (hp <= 0) {\n            _.respawn();\n           
+    hp = MaxHp;\n        }\n\n        if (managerId) {\n            try {\n               
+    _.sendTo(managerId, \"Damaged\", hp);\n            } catch (e) {\n               
+    _.log(\"\u9001\u4FE1\u30A8\u30E9\u30FC: \" + e);\n            }\n        }\n   
+    }\n});"
+--- !u!1001 &2708029093803619882
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2858271145177314790}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.42116
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.96593
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e287e8d1e2f303c449cf0586fb01ae61,
+        type: 3}
+      propertyPath: m_Name
+      value: TargetMarker
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e287e8d1e2f303c449cf0586fb01ae61, type: 3}
+--- !u!4 &2458511717255811521 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e287e8d1e2f303c449cf0586fb01ae61,
+    type: 3}
+  m_PrefabInstance: {fileID: 2708029093803619882}
+  m_PrefabAsset: {fileID: 0}

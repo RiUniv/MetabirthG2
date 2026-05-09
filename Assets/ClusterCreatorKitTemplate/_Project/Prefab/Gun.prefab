@@ -1,0 +1,299 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6332008783871562257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7292948163245467639}
+  - component: {fileID: 5935872561394902306}
+  - component: {fileID: 6241196713716437155}
+  - component: {fileID: 6337630747684925759}
+  - component: {fileID: 433047755860788360}
+  - component: {fileID: 8334497410421309951}
+  - component: {fileID: 932741038317354650}
+  m_Layer: 14
+  m_Name: Gun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7292948163245467639
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6332008783871562257}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3, y: 0.41, z: 3.79226}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 333609068820903061}
+  - {fileID: 5644531031842536262}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5935872561394902306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6332008783871562257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3977a5e65e72f4db4b85ddba10d48dd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.Item
+  id:
+    value: 2217259360986501891
+  itemName: 
+  size: {x: 0, y: 0, z: 0}
+--- !u!54 &6241196713716437155
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6332008783871562257}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &6337630747684925759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6332008783871562257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557c1287071b147459bb6f001560c6e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.MovableItem
+  item: {fileID: 5935872561394902306}
+  rb: {fileID: 6241196713716437155}
+--- !u!114 &433047755860788360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6332008783871562257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce108e3354c62c345a1cbcdf1f965e21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.GrabbableItem
+  movableItem: {fileID: 6337630747684925759}
+  grip: {fileID: 5644531031842536262}
+--- !u!114 &8334497410421309951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6332008783871562257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61061896c654489a41575fc291bf4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
+  sourceCodeAsset: {fileID: 0}
+  sourceCode: "const maxDistance = 30;\r\n$.onGrab((isGrab, isLeftHand, player) =>
+    {\r\n  if (isGrab) {\r\n    $.setPlayerScript(player);\r\n    player.send(\"init_manager\",
+    $.id);\r\n  }\r\n});\r\n\r\n$.onUse(isDown => {\r\n  if (!isDown) return;\r\n 
+    let position = $.getPosition();\r\n  let direction = new Vector3(0, 0, 1).applyQuaternion($.getRotation());\r\n 
+    let raycastResult = $.raycast(position, direction, maxDistance);\r\n\r\n\r\n 
+    // \u76F4\u7DDA\u4E0A\u306B\u4F55\u3082\u898B\u3064\u304B\u3089\u306A\u304B\u3063\u305F\u5834\u5408\r\n 
+    if (raycastResult == null) return;\r\n\r\n  let handle = raycastResult.handle;\r\n 
+    if(handle == null) return;\r\n\r\n  if (handle.type == \"player\") {\r\n\t\t$.log(\"Player\");\r\n\t\thandle.send(\"damage\",
+    { value: 40 });\r\n\t\treturn;\r\n\t}\r\n    \r\n});\r\n\r\n$.onReceive((messageType,
+    arg, sender) => {\n  $.log(\"receive damage\");\r\n  if (messageType === \"Damaged\")
+    {\r\n\r\n    $.sendSignalCompat(\"owner\", \"Damaged\"); \r\n    //$.setStateCompat(\"this\",
+    \"HP_Display\", arg.hp);\r\n  }\r\n}, { player: true }); // PlayerScript\u304B\u3089\u306E\u30E1\u30C3\u30BB\u30FC\u30B8\u3092\u53D7\u3051\u53D6\u308B\u8A2D\u5B9A"
+--- !u!114 &932741038317354650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6332008783871562257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb59730322447a7a13c40b87493e196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.PlayerScript
+  sourceCodeAsset: {fileID: 0}
+  sourceCode: "let hp = 100;\r\n\r\nlet managerId = null;\r\n\r\n_.onReceive((messageType,
+    arg, sender) => {\n\r\n    if (messageType === \"init_manager\") {\r\n       
+    managerId = _.sourceItemId; \r\n    }\t\r\n\r\n    if (messageType === \"damage\")
+    {\r\n        hp -= arg.value;\r\n        _.log(\"\u6B8B\u308AHP: \" + hp);\r\n\r\n       
+    if (hp <= 0) {\r\n            _.respawn();\r\n            hp = 100;\r\n       
+    }\r\n\r\n        if (managerId) {\r\n            try {\r\n                _.sendTo(managerId,
+    \"Damaged\", true);\r\n            } catch (e) {\r\n                _.log(\"\u9001\u4FE1\u30A8\u30E9\u30FC:
+    \" + e);\r\n            }\r\n        }\r\n    }\r\n});"
+--- !u!1 &9036285687180135725
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5644531031842536262}
+  m_Layer: 14
+  m_Name: Grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5644531031842536262
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9036285687180135725}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7292948163245467639}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &228433244181648254
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7292948163245467639}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_Name
+      value: HandGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2379238600979686947}
+  m_SourcePrefab: {fileID: 100100000, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0, type: 3}
+--- !u!4 &333609068820903061 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+    type: 3}
+  m_PrefabInstance: {fileID: 228433244181648254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1146983053619064367 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7b89f1fd0b3c5c94db1dd8aeb708fda0,
+    type: 3}
+  m_PrefabInstance: {fileID: 228433244181648254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2379238600979686947
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146983053619064367}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.26891124, y: 0.67640287, z: 1.3477167}
+  m_Center: {x: -0.0035677925, y: 0.09688387, z: 0.458201}
