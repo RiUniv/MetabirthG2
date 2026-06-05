@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5069364000749506367}
   - component: {fileID: 5114328710022157857}
   - component: {fileID: 6944015005593344472}
+  - component: {fileID: 8328966783855500127}
   m_Layer: 0
   m_Name: BattlePrivateManager
   m_TagString: Untagged
@@ -68,12 +69,13 @@ MonoBehaviour:
     === \"init\") {\r\n        $.setPlayerScript(arg);\n        $.state.targetPlayer
     = arg;\r\n    }\r\n    if (messageType === \"Damaged\") {\r\n        $.sendSignalCompat(\"owner\", 
     \"Damaged\");\n        $.setStateCompat(\"owner\",  \"playerhp\",arg);\r\n   
-    }\r\n}, { player: true });\n\n$.onUpdate((deltaTime) => {\n    let checkTimer
-    = $.state.checkTimer ?? 0;\n    checkTimer += deltaTime;\n\n    if (checkTimer
-    >= 10) {\n        CheckPlayerExistence();\n        checkTimer = 0;\n    }\n   
-    $.state.checkTimer = checkTimer;\n});\n\nfunction CheckPlayerExistence() {\n   
-    let target = $.state.targetPlayer;\n    \n    if (!target) return;\n\n    if
-    (!target.exists()) {\n        $.destroy(); // \u30A2\u30A4\u30C6\u30E0\u81EA\u8EAB\u3092\u7834\u68C4
+    }\n    if(messageType === \"Killed\"){\n\t$.setStateCompat(\"owner\",  \"playerKills\",
+    arg);\n    }\r\n}, { player: true });\n\n$.onUpdate((deltaTime) => {\n    let
+    checkTimer = $.state.checkTimer ?? 0;\n    checkTimer += deltaTime;\n\n    if
+    (checkTimer >= 10) {\n        CheckPlayerExistence();\n        checkTimer = 0;\n   
+    }\n    $.state.checkTimer = checkTimer;\n});\n\nfunction CheckPlayerExistence()
+    {\n    let target = $.state.targetPlayer;\n    \n    if (!target) return;\n\n   
+    if (!target.exists()) {\n        $.destroy(); // \u30A2\u30A4\u30C6\u30E0\u81EA\u8EAB\u3092\u7834\u68C4
     \n    }\n}\r\n"
 --- !u!114 &6944015005593344472
 MonoBehaviour:
@@ -88,13 +90,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.PlayerScript
   sourceCodeAsset: {fileID: 0}
-  sourceCode: "const MaxHp = 100;\nlet hp = MaxHp;\nlet managerId =  _.sourceItemId;\n\n_.onReceive((messageType,
-    arg, sender) => {\n    if (messageType === \"damage\") {\n        hp -= arg.value;\n       
-    _.log(\"\u6B8B\u308AHP: \" + hp);\n\n        if (hp <= 0) {\n            _.respawn();\n           
-    hp = MaxHp;\n        }\n\n        if (managerId) {\n            try {\n               
-    _.sendTo(managerId, \"Damaged\", hp);\n            } catch (e) {\n               
-    _.log(\"\u9001\u4FE1\u30A8\u30E9\u30FC: \" + e);\n            }\n        }\n   
-    }\n});"
+  sourceCode: "//initialize.js\u3067\u751F\u6210\u3055\u308C\u305F\u30A2\u30A4\u30C6\u30E0\u306B\u3064\u3051\u3066\u3042\u308BPlayer
+    script (Cluster script\u3068\u306F\u533A\u5225\u3055\u308C\u308B)\r\n//\u30D7\u30EC\u30A4\u30E4\u30FC\u304C\u76F8\u624B\u304B\u3089\u30C0\u30E1\u30FC\u30B8\u3092\u98DF\u3089\u3063\u305F\u6642\u306B\u901A\u77E5\u3092\u53D7\u3051\u53D6\u308A\u3001BattleManagerItem\u306B\u901A\u77E5\u3059\u308B\u3002\r\n\r\nconst
+    MaxHp = 100;\r\nlet hp = MaxHp;\r\nlet managerId =  _.sourceItemId;\nconst gameManagerId
+    = $.worldItemReference(\"GameManager\");\nlet kills = 0;\r\n_.log(gameManagerId);\r\n_.onReceive((messageType,
+    arg, sender) => {\r\n    if (messageType === \"damage\") {\r\n        hp -= arg.value;\r\n       
+    _.sendTo(arg.attacker, \"HitPlayerHp\", hp);\r\n        if (hp <= 0) {\r\n           
+    _.respawn();\r\n            hp = MaxHp;\r\n        }\r\n\r\n        if (managerId)
+    {\r\n            try {\r\n                _.sendTo(managerId, \"Damaged\", hp);\r\n           
+    } catch (e) {\r\n                _.log(\"\u9001\u4FE1\u30A8\u30E9\u30FC: \" +
+    e);\r\n            }\r\n        }\r\n    }\n    //\u653B\u6483\u3092\u4E0E\u3048\u305F\u4EBA\u306Ehp\u60C5\u5831\u3092\u53D7\u3051\u53D6\u308B\r\n   
+    if(messageType === \"HitPlayerHp\"){\r\n        if(arg <= 0){\n\t  kills++;\r\n           
+    _.sendTo(managerId, \"Killed\", kills);\n            _.sendTo(gameManagerId,
+    \"playerKills\", kills);\r\n        }\r\n    }\r\n});"
+--- !u!114 &8328966783855500127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497718157366915462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49554f6eafb04d538a589436719e8fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.WorldItemReferenceList
+  worldItemReferences:
+  - id: GameManager
+    item: {fileID: 0}
 --- !u!1001 &2708029093803619882
 PrefabInstance:
   m_ObjectHideFlags: 0

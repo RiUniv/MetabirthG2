@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 4340070330127503323}
   - component: {fileID: 8171845532971161768}
   - component: {fileID: 3238962885539303751}
-  - component: {fileID: -4208692840769975600}
   - component: {fileID: 189405840245599342}
   - component: {fileID: 6464820326873164499}
   - component: {fileID: 8927382451820260760}
-  - component: {fileID: -7793996345917101220}
+  - component: {fileID: -7661805106061779493}
+  - component: {fileID: 323504554842862403}
   m_Layer: 14
   m_Name: GunTest
   m_TagString: Untagged
@@ -83,30 +83,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-4208692840769975600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108647118812612116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f90a8458122ef47c3b840e286a75994a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ClusterVR.CreatorKit.Trigger.Implements::ClusterVR.CreatorKit.Trigger.Implements.OnCreateItemTrigger
-  item: {fileID: 8171845532971161768}
-  triggers:
-  - target: 0
-    specifiedTargetItem: {fileID: 0}
-    key: bullets
-    type: 3
-    value:
-      boolValue: 0
-      floatValue: 0
-      integerValue: 5
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
 --- !u!114 &189405840245599342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,14 +97,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
   sourceCodeAsset: {fileID: 0}
   sourceCode: "const maxDistance = 30;\nconst Damage = 10;\n\n$.onStart(() => {\n   
-    $.state.Bullets = 10;\n    $.state.maxBullets = 20;\n});\n\n$.onUse(isDown =>
-    {\n  if (!isDown) return;\n  if ($.state.Bullets > 0) Shoot();\n  else {\n   
-    $.state.Bullets = $.state.maxBullets;\n  } \n});\n\nfunction Shoot(){\n  let
-    bullets = $.state.Bullets\n  let position = $.getPosition();\n  let direction
-    = new Vector3(0, 0, 1).applyQuaternion($.getRotation());\n  let raycastResult
-    = $.raycast(position, direction, maxDistance);\n\n  bullets--;\n  $.state.Bullets=
-    bullets;\n  $.setStateCompat(\"this\",\"Bullets\",bullets);\n  $.sendSignalCompat(\"this\",\"Shoot\");\n 
-    \n  // \u76F4\u7DDA\u4E0A\u306B\u4F55\u3082\u898B\u3064\u304B\u3089\u306A\u304B\u3063\u305F\u5834\u5408\n 
+    $.state.Bullets = 10;\n    $.state.maxBullets = 20;\n    $.setStateCompat(\"owner\",\"RemainBullets\",$.state.Bullets);\n});\n\n$.onUse(isDown
+    => {\n  if (!isDown) return;\n  if ($.state.Bullets > 0) Shoot();\n  else {\n   
+    $.sendSignalCompat(\"this\",\"ReloadStart\");\n    $.state.Bullets = $.state.maxBullets;\n 
+    } \n});\n\nfunction Shoot(){\n  let bullets = $.state.Bullets\n  let position
+    = $.getPosition();\n  let direction = new Vector3(0, 0, 1).applyQuaternion($.getRotation());\n 
+    let raycastResult = $.raycast(position, direction, maxDistance);\n\n  bullets--;\n 
+    $.state.Bullets= bullets;\n  $.setStateCompat(\"owner\",\"RemainBullets\",bullets);\n 
+    $.sendSignalCompat(\"this\",\"Shoot\");\n  \n  // \u76F4\u7DDA\u4E0A\u306B\u4F55\u3082\u898B\u3064\u304B\u3089\u306A\u304B\u3063\u305F\u5834\u5408\n 
     if (raycastResult == null) {\n\treturn;\n}\n\n  let handle = raycastResult.handle;\n 
     if(handle == null) return;\n\n  if (handle.type == \"player\") {\n\t\thandle.send(\"damage\",
     { value: Damage });\n\t\treturn;\n   }\n}"
@@ -160,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.GrabbableItem
   movableItem: {fileID: 6464820326873164499}
   grip: {fileID: 8649112927339447179}
---- !u!114 &-7793996345917101220
+--- !u!114 &-7661805106061779493
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,47 +153,35 @@ MonoBehaviour:
     target: 0
     key: Shoot
   logic:
-    statements:
-    - singleStatement:
-        targetState:
-          target: 1
-          key: RemainBullets
-          parameterType: 3
-        expression:
-          type: 0
-          value:
-            type: 1
-            constant:
-              type: 3
-              boolValue: 0
-              floatValue: 0
-              integerValue: 10
-              vector2Value: {x: 0, y: 0}
-              vector3Value: {x: 0, y: 0, z: 0}
-            sourceState:
-              target: 0
-              key: bullets
-              type: 3
-          operatorExpression:
-            operator: 0
-            operands:
-            - type: 0
-              value:
-                type: 0
-                constant:
-                  type: 1
-                  boolValue: 0
-                  floatValue: 0
-                  integerValue: 0
-                  vector2Value: {x: 0, y: 0}
-                  vector3Value: {x: 0, y: 0, z: 0}
-                sourceState:
-                  target: 0
-                  key: 
-                  type: 6
-              operatorExpression:
-                operator: 0
-                operands: []
+    statements: []
+--- !u!114 &323504554842862403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108647118812612116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5a9785e42671427a8761e148889f041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Operation.Implements::ClusterVR.CreatorKit.Operation.Implements.ItemTimer
+  item: {fileID: 8171845532971161768}
+  key:
+    target: 0
+    key: ReloadStart
+  delayTimeSeconds: 0.4
+  triggers:
+  - target: 0
+    specifiedTargetItem: {fileID: 0}
+    key: ReloadEnd
+    type: 0
+    value:
+      boolValue: 1
+      floatValue: 0
+      integerValue: 0
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
 --- !u!1 &5701591456342660953
 GameObject:
   m_ObjectHideFlags: 0
