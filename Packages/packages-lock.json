@@ -210,12 +210,6 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "jp.amagamina.overwriter": {
-      "version": "file:C:/Users/Ririu/document/その他/unity-overwriter-master",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
     "mu.cluster.cluster-creator-kit": {
       "version": "3.3.0",
       "depth": 0,
