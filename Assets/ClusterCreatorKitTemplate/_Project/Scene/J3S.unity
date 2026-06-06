@@ -617,6 +617,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &460891122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 460891123}
+  - component: {fileID: 460891125}
+  - component: {fileID: 460891124}
+  m_Layer: 0
+  m_Name: BackGround
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &460891123
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460891122}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1388425349}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &460891124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460891122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: f181ad3c74687b041a209b9e4880a1a9, type: 2}
+  m_Color: {r: 0.09952125, g: 0.05833927, b: 0.1792453, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &460891125
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460891122}
+  m_CullTransparentMesh: 0
 --- !u!1 &533209480
 GameObject:
   m_ObjectHideFlags: 0
@@ -872,6 +947,7 @@ GameObject:
   - component: {fileID: 700286541}
   - component: {fileID: 700286540}
   - component: {fileID: 700286537}
+  - component: {fileID: 700286542}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -892,33 +968,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
   sourceCodeAsset: {fileID: 0}
-  sourceCode: "// 1\u4F4D\u301C3\u4F4D\u3092\u8868\u793A\u3059\u308B\u305F\u3081\u306EsubNode\u914D\u5217\r\nconst
-    ranks = [\r\n    $.subNode(\"Rank_1\"),\r\n    $.subNode(\"Rank_2\"),\r\n   
-    $.subNode(\"Rank_3\")\r\n];\r\n\r\n$.onStart(() => {\r\n    // \u30D7\u30EC\u30A4\u30E4\u30FC\u306E\u30AD\u30EB\u30C7\u30FC\u30BF\u3092\u4FDD\u5B58\u3059\u308B\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\uFF08\u8F9E\u66F8\uFF09\u3092\u521D\u671F\u5316\r\n   
-    // \u69CB\u9020\u306E\u4F8B: { \"userId_A\": { name: \"PlayerA\", kills: 5 },
-    ... }\r\n    $.state.leaderboard = {};\r\n    \r\n    // \u6700\u521D\u306F\u300C\u30C7\u30FC\u30BF\u304C\u3042\u308A\u307E\u305B\u3093\u300D\u3068\u8868\u793A\u3057\u3066\u304A\u304F\r\n   
-    for (let i = 0; i < ranks.length; i++) {\r\n        ranks[i].setText(`${i + 1}\u4F4D:
+  sourceCode: "const ranks = [\r\n    $.subNode(\"Rank_1\"),\r\n    $.subNode(\"Rank_2\"),\r\n   
+    $.subNode(\"Rank_3\")\r\n];\r\n\r\nconst spawnerId = $.worldItemReference(\"Spawner\");\r\n\r\n$.onStart(()
+    => {\r\n    //\u8F9E\u66F8\r\n    $.state.leaderboard = {};\r\n    \r\n    for
+    (let i = 0; i < ranks.length; i++) {\r\n        ranks[i].setText(`${i + 1}\u4F4D:
     -----`);\r\n    }\r\n});\r\n\r\n$.onReceive((messageType, arg, sender) => {\r\n   
-    if (messageType === \"playerKills\") {\r\n        if (!sender) return;\r\n\r\n       
-    // 1. \u9001\u308A\u4E3B\uFF08\u30D7\u30EC\u30A4\u30E4\u30FC\uFF09\u306E\u8B58\u5225\u30AD\u30FC\uFF08userId
-    \u3084 userDisplayName\uFF09\u3092\u53D6\u5F97\r\n        let pId = sender.userId;
-    \r\n        let pName = sender.userDisplayName;\r\n        let pKills = arg;
-    // \u9001\u3089\u308C\u3066\u304D\u305F\u30AD\u30EB\u6570\r\n\r\n        // 2.
-    \u73FE\u5728\u306E\u30E9\u30F3\u30AD\u30F3\u30B0\u30C7\u30FC\u30BF\u3092state\u304B\u3089\u53D6\u5F97\u3057\u3066\u66F4\u65B0\r\n       
-    let currentBoard = $.state.leaderboard ?? {};\r\n        currentBoard[pId] =
-    { name: pName, kills: pKills };\r\n        $.state.leaderboard = currentBoard;
-    // state\u306B\u4FDD\u5B58\u3057\u76F4\u3059\r\n\r\n        // 3. \u30C7\u30FC\u30BF\u3092\u4E26\u3073\u66FF\u3048\u308B\u305F\u3081\u306B\u3001\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304B\u3089\u914D\u5217\u306B\u5909\u63DB\r\n       
-    let playersArray = [];\r\n        for (let key in currentBoard) {\r\n           
-    playersArray.push(currentBoard[key]);\r\n        }\r\n\r\n        // 4. \u30AD\u30EB\u6570\uFF08kills\uFF09\u304C\u591A\u3044\u9806\u306B\u30BD\u30FC\u30C8\uFF08\u964D\u9806\uFF09\r\n       
-    playersArray.sort((a, b) => b.kills - a.kills);\r\n\r\n        // 5. \u30C6\u30AD\u30B9\u30C8\uFF08Rank_1
-    \u301C Rank_3\uFF09\u3092\u6700\u65B0\u60C5\u5831\u306B\u66F8\u304D\u63DB\u3048\u308B\r\n       
-    for (let i = 0; i < ranks.length; i++) {\r\n            if (playersArray[i])
-    {\r\n                // \u30C7\u30FC\u30BF\u304C\u3042\u308B\u5834\u5408\u306F\u300C1\u4F4D:
-    \u30D7\u30EC\u30A4\u30E4\u30FC\u540D (5 Kills)\u300D\u306E\u3088\u3046\u306B\u8868\u793A\r\n               
-    ranks[i].setText(`${i + 1}\u4F4D: ${playersArray[i].name} (${playersArray[i].kills}
-    Kills)`);\r\n            } else {\r\n                // \u307E\u3060\u305D\u3053\u307E\u3067\u30D7\u30EC\u30A4\u30E4\u30FC\u6570\u304C\u3044\u306A\u3044\u5834\u5408\u306F\u30CF\u30A4\u30D5\u30F3\u8868\u793A\r\n               
-    ranks[i].setText(`${i + 1}\u4F4D: -----`);\r\n            }\r\n        }\r\n   
-    }\r\n}, { player: true });"
+    $.log(messageType);\r\n    // PlayerScript\u304B\u3089\u30AD\u30EB\u5831\u544A\u304C\u5C4A\u3044\u305F\u3068\u304D\r\n   
+    if (messageType === \"AddKillReport\") {\r\n        if (!sender) return;\r\n\r\n       
+    let pId = sender.userId;\r\n        let pName = sender.userDisplayName;\r\n\r\n       
+    // 1. \u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\uFF08state\uFF09\u306E\u66F4\u65B0\r\n       
+    let currentBoard = $.state.leaderboard ?? {};\r\n        if (!currentBoard[pId])
+    {\r\n            currentBoard[pId] = { name: pName, kills: 0 };\r\n        }\r\n       
+    currentBoard[pId].kills += 1; // 1\u30AD\u30EB\u8FFD\u52A0\r\n        $.state.leaderboard
+    = currentBoard;\r\n\r\n        // 2. \u30E9\u30F3\u30AD\u30F3\u30B0\u8868\u793A\u306E\u66F4\u65B0\u51E6\u7406\r\n       
+    UpdateRankings();\r\n\r\n        // 3. \u30AD\u30EB\u3057\u305F\u30D7\u30EC\u30A4\u30E4\u30FC\u306E\u300C\u500B\u5225\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u300D\u3078\u30C7\u30FC\u30BF\u3092\u9006\u6D41\u3055\u305B\u308B\r\n       
+    let latestKills = currentBoard[pId].kills;\r\n        sender.send(\"UpdateKillsUI\",
+    latestKills);\r\n    }\r\n\r\n    if (messageType === \"startMatch\") {\r\n       
+    StartMatch();\r\n    }\r\n\r\n    // \u8A66\u5408\u7D42\u4E86\uFF08\u30EA\u30BB\u30C3\u30C8\uFF09\u306E\u5408\u56F3\u3092\u5916\u304B\u3089\u53D7\u3051\u53D6\u3063\u305F\u3068\u304D\r\n   
+    if (messageType === \"endMatch\") {\r\n        EndMatch();\r\n    }\r\n}, { player:
+    true });\r\n\r\n/**\r\n * \u73FE\u5728\u306E\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\uFF08$.state.leaderboard\uFF09\u3092\u5143\u306B\u3001\r\n
+    * \u30E9\u30F3\u30AD\u30F3\u30B0\u30DC\u30FC\u30C9\u306E\u30C6\u30AD\u30B9\u30C8\uFF08Rank_1
+    \u301C Rank_3\uFF09\u3092\u6700\u65B0\u72B6\u614B\u306B\u66F4\u65B0\u3059\u308B\u95A2\u6570\r\n
+    */\r\nfunction UpdateRankings() {\r\n    // 1. \u73FE\u5728\u306E\u30E9\u30F3\u30AD\u30F3\u30B0\u30C7\u30FC\u30BF\u3092state\u304B\u3089\u53D6\u5F97\r\n   
+    let currentBoard = $.state.leaderboard ?? {};\r\n\r\n    // 2. \u30C7\u30FC\u30BF\u3092\u4E26\u3073\u66FF\u3048\u308B\u305F\u3081\u306B\u3001\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\uFF08\u9023\u60F3\u914D\u5217\uFF09\u304B\u3089\u666E\u901A\u306E\u914D\u5217\u306B\u5909\u63DB\r\n   
+    let playersArray = [];\r\n    for (let key in currentBoard) {\r\n        playersArray.push(currentBoard[key]);\r\n   
+    }\r\n\r\n    // 3. \u30AD\u30EB\u6570\uFF08kills\uFF09\u304C\u591A\u3044\u9806\u306B\u30BD\u30FC\u30C8\uFF08\u964D\u9806\uFF09\r\n   
+    playersArray.sort((a, b) => b.kills - a.kills);\r\n\r\n    // 4. \u30C6\u30AD\u30B9\u30C8\uFF08Rank_1
+    \u301C Rank_3\uFF09\u3092\u6700\u65B0\u60C5\u5831\u306B\u66F8\u304D\u63DB\u3048\u308B\r\n   
+    for (let i = 0; i < ranks.length; i++) {\r\n        if (playersArray[i]) {\r\n           
+    // \u30C7\u30FC\u30BF\u304C\u3042\u308B\u5834\u5408\u306F\u300C1\u4F4D: \u30D7\u30EC\u30A4\u30E4\u30FC\u540D
+    (5 Kills)\u300D\u306E\u3088\u3046\u306B\u8868\u793A\r\n            ranks[i].setText(`${i
+    + 1}\u4F4D: ${playersArray[i].name} (${playersArray[i].kills} Kills)`);\r\n       
+    } else {\r\n            // \u307E\u3060\u30C7\u30FC\u30BF\u304C\u306A\u3044\uFF08\u30D7\u30EC\u30A4\u30E4\u30FC\u304C\u8DB3\u308A\u306A\u3044\uFF09\u5834\u5408\u306F\u30CF\u30A4\u30D5\u30F3\u8868\u793A\r\n           
+    ranks[i].setText(`${i + 1}\u4F4D: -----`);\r\n        }\r\n    }\r\n}\r\n\r\nfunction
+    StartMatch() {\r\n    // \u30E9\u30F3\u30AD\u30F3\u30B0\u30DC\u30FC\u30C9\u306E\u521D\u671F\u5316\u306A\u3069\r\n   
+    $.state.leaderboard = {};\r\n    UpdateRankings();\r\n\r\n    // \u76E3\u8996\u30FB\u751F\u6210\u5668\uFF08Spawner\uFF09\u306B\u300C\u30DE\u30C3\u30C1\u30B9\u30BF\u30FC\u30C8\uFF08\u81EA\u52D5\u751F\u6210\u3057\u3066\u306D\uFF09\u300D\u3068\u9001\u308B\r\n   
+    if (spawnerId) {\r\n        spawnerId.send(\"StartMatch\", null);\r\n    }\r\n}\r\n\r\nfunction
+    EndMatch() {\r\n    // \u76E3\u8996\u30FB\u751F\u6210\u5668\uFF08Spawner\uFF09\u306B\u300C\u30DE\u30C3\u30C1\u7D42\u4E86\uFF08\u5168\u54E1\u6D88\u3048\u3066\u306D\uFF09\u300D\u3068\u9001\u308B\r\n   
+    if (spawnerId) {\r\n        spawnerId.send(\"EndMatch\", null);\r\n    }\r\n}"
 --- !u!114 &700286540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -951,6 +1038,21 @@ Transform:
   - {fileID: 1111471335}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &700286542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700286536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49554f6eafb04d538a589436719e8fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.WorldItemReferenceList
+  worldItemReferences:
+  - id: Spawner
+    item: {fileID: 1621063163}
 --- !u!1001 &848637261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1210,6 +1312,215 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1079770227}
   m_CullTransparentMesh: 1
+--- !u!1 &1111324567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1111324574}
+  - component: {fileID: 1111324573}
+  - component: {fileID: 1111324572}
+  - component: {fileID: 1111324571}
+  - component: {fileID: 1111324570}
+  - component: {fileID: 1111324576}
+  - component: {fileID: 1111324569}
+  - component: {fileID: 1111324568}
+  - component: {fileID: 1111324575}
+  m_Layer: 0
+  m_Name: GameSwitch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1111324568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111324567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49554f6eafb04d538a589436719e8fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.WorldItemReferenceList
+  worldItemReferences:
+  - id: GameManager
+    item: {fileID: 700286540}
+--- !u!114 &1111324569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111324567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61061896c654489a41575fc291bf4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
+  sourceCodeAsset: {fileID: 0}
+  sourceCode: "const gameManagerId = $.worldItemReference(\"GameManager\");\r\n$.onStart(()
+    => {\r\n    $.state.angle = 0;\r\n});\r\nlet isMatch = false;\r\n$.onInteract(()
+    => {\r\n    if(!isMatch){\r\n        $.subNode(\"Text\").setText(\"During the
+    match\");\r\n        gameManagerId.send(\"startMatch\",null);\r\n        isMatch
+    = true;\r\n    }else{\r\n        $.subNode(\"Text\").setText(\"Before the match
+    starts\");\r\n        gameManagerId.send(\"endMatch\",null);\r\n        isMatch
+    = false;\r\n    }\r\n    \r\n});"
+--- !u!114 &1111324570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111324567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3977a5e65e72f4db4b85ddba10d48dd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.Item
+  id:
+    value: 9335649500599952587
+  itemName: 
+  size: {x: 0, y: 0, z: 0}
+--- !u!65 &1111324571
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111324567}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1111324572
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111324567}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1111324573
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111324567}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1111324574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111324567}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.6, y: 0.54, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1388425349}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1111324575
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111324567}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1111324576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111324567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557c1287071b147459bb6f001560c6e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.MovableItem
+  item: {fileID: 1111324570}
+  rb: {fileID: 1111324575}
 --- !u!1 &1111471334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,6 +1662,60 @@ MonoBehaviour:
   textAnchor: 1
   textAlignment: 0
   color: {r: 1, g: 1, b: 1, a: 1}
+--- !u!1 &1276410690
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1276410691}
+  - component: {fileID: 1276410692}
+  m_Layer: 0
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1276410691
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276410690}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3.7, y: 3.7, z: 3.7}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1388425349}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1276410692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276410690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 661c45a344104837b0ee4901951c608c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.World.Implements::ClusterVR.CreatorKit.World.Implements.TextView.TextView
+  textMesh: {fileID: 0}
+  text: aaaaaaaaaaa
+  size: 3.39
+  textAnchor: 4
+  textAlignment: 0
+  color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1373828606
 GameObject:
   m_ObjectHideFlags: 0
@@ -1451,6 +1816,91 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373828606}
   m_CullTransparentMesh: 1
+--- !u!1 &1388425348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1388425349}
+  - component: {fileID: 1388425351}
+  - component: {fileID: 1388425350}
+  m_Layer: 0
+  m_Name: SignBoard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1388425349
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388425348}
+  m_LocalRotation: {x: 0, y: -0.5239858, z: 0, w: 0.851727}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.015, y: 0.015, z: 0.010000001}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 460891123}
+  - {fileID: 1276410691}
+  m_Father: {fileID: 1111324574}
+  m_LocalEulerAnglesHint: {x: 0, y: -63.2, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1.5}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1388425350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388425348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &1388425351
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388425348}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &1411756970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1684,12 +2134,9 @@ GameObject:
   - component: {fileID: 1621063163}
   - component: {fileID: 1621063162}
   - component: {fileID: 1621063165}
-  - component: {fileID: 1621063168}
-  - component: {fileID: 1621063167}
-  - component: {fileID: 1621063166}
   - component: {fileID: 1621063169}
   m_Layer: 14
-  m_Name: InitializeArea
+  m_Name: PlayerManagerSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1708,14 +2155,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
   sourceCodeAsset: {fileID: 0}
-  sourceCode: "const gameManagerId = $.worldItemReference(\"GameManager\");\n\n$.onGrab((isGrab,
-    isLeftHand, player) => {\r\n    if (!isGrab) return;\r\n    $.requestOwner(player)\r\n   
-    if($.getStateCompat(\"owner\",\"hasBattleManager\",\"boolean\")){\n\t$.log(player.userDisplayName
-    + \":hasBattleManager\u304C\u3059\u3067\u306Btrue\u3067\u3059\");\n\t return;\n  
-    }\r\n\r\n    const templateId = new WorldItemTemplateId(\"BattlePrivateManager\");\r\n   
-    const commItem = $.createItem(templateId, $.getPosition(), $.getRotation());\n   
-    $.setStateCompat(\"owner\",\"hasBattleManager\",true);\r\n\r\n    commItem.send(\"init\",
-    {player: player,gameManagerId: gameManagerId});\r\n});"
+  sourceCode: "const gameManagerId = $.worldItemReference(\"GameManager\");\r\n\r\n$.onStart(()
+    => {\r\n    $.state.playerManagerPairs = {};\r\n\r\n    // \u5B58\u5728\u30C1\u30A7\u30C3\u30AF\u7528\u306E\u30BF\u30A4\u30DE\u30FC\r\n   
+    $.state.checkTimer = 0;\r\n});\r\n\r\n$.onReceive((messageType, arg, sender)
+    => {\r\n\r\n    // GameManager\u304B\u3089\u300C\u30DE\u30C3\u30C1\u30B9\u30BF\u30FC\u30C8\u300D\u306E\u5408\u56F3\u304C\u6765\u305F\u3089\u3001\u5168\u54E1\u5206\u3092\u81EA\u52D5\u751F\u6210\r\n   
+    if (messageType === \"StartMatch\") {\r\n        let pairs = $.state.playerManagerPairs
+    ?? {};\r\n\r\n        let allPlayers = $.getPlayersNear($.getPosition(), Infinity);\r\n\r\n       
+    allPlayers.forEach(player => {\r\n            if (player && player.exists())
+    {\r\n                // \u3059\u3067\u306B\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u304C\u3042\u308B\u306A\u3089\u30B9\u30AD\u30C3\u30D7\r\n               
+    if (pairs[player.userId]) return;\r\n\r\n                // \u500B\u5225\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u306E\u81EA\u52D5\u751F\u6210\r\n               
+    const templateId = new WorldItemTemplateId(\"BattlePrivateManager\");\r\n               
+    const commItem = $.createItem(templateId, player.getPosition(), player.getRotation());\r\n\r\n               
+    pairs[player.userId] = {\r\n                    player: player,\r\n                   
+    managerHandle: commItem \r\n                };\r\n\r\n                // \u500B\u5225\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u306E\u521D\u671F\u5316\r\n               
+    commItem.send(\"init\", { player: player, gameManagerId: gameManagerId });\r\n           
+    }\r\n        });\r\n        $.state.playerManagerPairs = pairs;\r\n    }\r\n\r\n   
+    // GameManager\u304B\u3089\u300C\u30DE\u30C3\u30C1\u7D42\u4E86\uFF08\u30EA\u30BB\u30C3\u30C8\uFF09\u300D\u306E\u5408\u56F3\u304C\u6765\u305F\u3089\u3001\u5168\u54E1\u306E\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u3092\u6D88\u53BB\r\n   
+    if (messageType === \"EndMatch\") {\r\n        let pairs = $.state.playerManagerPairs
+    ?? {};\r\n\r\n        for (let userId in pairs) {\r\n            // \u3010\u5909\u66F4\u3011managerHandle
+    \u3092\u53D6\u308A\u51FA\u3059\r\n            let mHandle = pairs[userId].managerHandle;\r\n           
+    \r\n            // \u3010\u5909\u66F4\u3011mHandle \u304C\u5B58\u5728\u3057\u3001\u304B\u3064\u305D\u306E\u30A2\u30A4\u30C6\u30E0\u304C\u307E\u3060\u30EF\u30FC\u30EB\u30C9\u306B\u3042\u308C\u3070\r\n           
+    if (mHandle && mHandle.exists()) {\r\n                mHandle.send(\"DestroyYourself\",
+    null);\r\n            }\r\n        }\r\n\r\n        // \u30DA\u30A2\u306E\u30EA\u30B9\u30C8\u3092\u5B8C\u5168\u306B\u7A7A\u306B\u3057\u3066\u6B21\u306E\u8A66\u5408\u306B\u5099\u3048\u308B\r\n       
+    $.state.playerManagerPairs = {};\r\n    }\r\n});\r\n\r\n// \u3010\u5B9A\u671F\u30C1\u30A7\u30C3\u30AF\u3011\r\n$.onUpdate((deltaTime)
+    => {\r\n    let checkTimer = $.state.checkTimer ?? 0;\r\n    checkTimer += deltaTime;\r\n\r\n   
+    if (checkTimer >= 5) { // 5\u79D2\u3054\u3068\u306B\u4E00\u62EC\u30C1\u30A7\u30C3\u30AF\r\n       
+    CheckActivePairs();\r\n        checkTimer = 0;\r\n    }\r\n    $.state.checkTimer
+    = checkTimer;\r\n});\r\n\r\n/**\r\n * \u30D7\u30EC\u30A4\u30E4\u30FC\u3068\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u306E\u7D44\u3092\u5DE1\u56DE\u3057\u3001\u30D7\u30EC\u30A4\u30E4\u30FC\u304C\u9000\u5BA4\u3057\u3066\u3044\u305F\u3089\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC\u3092\u6D88\u3059\u95A2\u6570\r\n
+    */\r\nfunction CheckActivePairs() {\r\n    let pairs = $.state.playerManagerPairs
+    ?? {};\r\n\r\n    for (let userId in pairs) {\r\n        const player = pairs[userId].player;\r\n       
+    const mHandle = pairs[userId].managerHandle;\r\n\r\n        // \u3082\u3057\u30D7\u30EC\u30A4\u30E4\u30FC\u304C\u3082\u3046\u30EF\u30FC\u30EB\u30C9\u306B\u5B58\u5728\u3057\u3066\u3044\u306A\u3051\u308C\u3070\uFF08\u30ED\u30B0\u30A2\u30A6\u30C8\u7B49\uFF09\r\n       
+    if (!player || !player.exists()) {\r\n            if (mHandle && mHandle.exists())
+    {\r\n                mHandle.send(\"DestroyYourself\", null);\r\n           
+    }\r\n            // \u7BA1\u7406\u30EA\u30B9\u30C8\u304B\u3089\u3053\u306E\u7D44\u3092\u524A\u9664\r\n           
+    delete pairs[userId];\r\n        }\r\n    }\r\n\r\n    // state\u306B\u4FDD\u5B58\u3057\u76F4\u3059\r\n   
+    $.state.playerManagerPairs = pairs;\r\n}"
 --- !u!114 &1621063163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1767,61 +2241,6 @@ MonoBehaviour:
       type: 3}
     itemTemplateId:
       value: 3905862430618881445
---- !u!114 &1621063166
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1621063161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce108e3354c62c345a1cbcdf1f965e21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.GrabbableItem
-  movableItem: {fileID: 1621063167}
-  grip: {fileID: 0}
---- !u!114 &1621063167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1621063161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 557c1287071b147459bb6f001560c6e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.MovableItem
-  item: {fileID: 1621063163}
-  rb: {fileID: 1621063168}
---- !u!54 &1621063168
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1621063161}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &1621063169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2226,3 +2645,4 @@ SceneRoots:
   - {fileID: 5131848161340167223}
   - {fileID: 848637261}
   - {fileID: 700286541}
+  - {fileID: 1111324574}

@@ -65,20 +65,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
   sourceCodeAsset: {fileID: 0}
   sourceCode: "$.onReceive((messageType, arg, sender) => {\r\n    if (messageType
-    === \"init\") {\n        const targetPlayer = arg.player;\n\r\n        $.setPlayerScript(targetPlayer);\n       
-    $.state.targetPlayer = targetPlayer;\n        $.state.gameManagerId = arg.gameManagerId;\n\n       
-    if (targetPlayer && arg.gameManagerId) {\n            targetPlayer.send(\"InitPlayerScript\",
-    {\n                gameManagerId: arg.gameManagerId\n            });\n       
-    }\r\n    }\r\n    if (messageType === \"Damaged\") {\r\n        $.sendSignalCompat(\"owner\", 
-    \"Damaged\");\n        $.setStateCompat(\"owner\",  \"playerhp\",arg);\r\n   
-    }\n    if(messageType === \"KilledEnemy\"){\n\t$.setStateCompat(\"owner\",  \"playerKills\",
-    arg);\n    }\r\n}, { player: true });\n\n$.onUpdate((deltaTime) => {\n    let
-    checkTimer = $.state.checkTimer ?? 0;\n    checkTimer += deltaTime;\n\n    if
-    (checkTimer >= 10) {\n        CheckPlayerExistence();\n        checkTimer = 0;\n   
-    }\n    $.state.checkTimer = checkTimer;\n});\n\nfunction CheckPlayerExistence()
-    {\n    let target = $.state.targetPlayer;\n    \n    if (!target) return;\n\n   
-    if (!target.exists()) {\n        $.destroy(); // \u30A2\u30A4\u30C6\u30E0\u81EA\u8EAB\u3092\u7834\u68C4
-    \n    }\n}\r\n"
+    === \"init\") {\r\n        const targetPlayer = arg.player;\r\n        $.requestOwner(targetPlayer);\r\n       
+    $.log(\"player script\u3092\u30BB\u30C3\u30C8\u3057\u307E\u3057\u305F\");\r\n       
+    $.setPlayerScript(targetPlayer);\r\n        $.state.targetPlayer = targetPlayer;\r\n       
+    $.state.gameManagerId = arg.gameManagerId;\r\n\r\n        if (targetPlayer &&
+    arg.gameManagerId) {\r\n            targetPlayer.send(\"InitPlayerScript\", {\r\n               
+    gameManagerId: arg.gameManagerId\r\n            });\r\n        }\r\n    }\r\n\r\n   
+    if (messageType === \"Damaged\") {\r\n        $.sendSignalCompat(\"owner\", 
+    \"Damaged\");\r\n        $.setStateCompat(\"owner\",  \"playerhp\",arg);\r\n   
+    }\r\n\r\n    if (messageType === \"UpdateKillsUI\") {\r\n        $.setStateCompat(\"owner\",
+    \"playerKills\", arg);\r\n    }\r\n\r\n    if (messageType === \"DestroyYourself\")
+    {\r\n        const target = $.state.targetPlayer;\r\n        if (target && target.exists())
+    {\r\n\r\n        }\r\n        $.log(\"\u7BA1\u7406\u5074\u304B\u3089\u306E\u547D\u4EE4\u306B\u3088\u308A\u3001\u81EA\u8EAB\u3092\u7834\u68C4\u3057\u307E\u3059\u3002\");\r\n       
+    $.destroy(); // \u30A2\u30A4\u30C6\u30E0\u81EA\u8EAB\u3092\u7834\u68C4\r\n   
+    }\r\n}, { player: true });"
 --- !u!114 &6944015005593344472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,22 +92,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.PlayerScript
   sourceCodeAsset: {fileID: 0}
-  sourceCode: "//initialize.js\u3067\u751F\u6210\u3055\u308C\u305F\u30A2\u30A4\u30C6\u30E0\u306B\u3064\u3051\u3066\u3042\u308BPlayer
-    script (Cluster script\u3068\u306F\u533A\u5225\u3055\u308C\u308B)\r\n//\u30D7\u30EC\u30A4\u30E4\u30FC\u304C\u76F8\u624B\u304B\u3089\u30C0\u30E1\u30FC\u30B8\u3092\u98DF\u3089\u3063\u305F\u6642\u306B\u901A\u77E5\u3092\u53D7\u3051\u53D6\u308A\u3001BattleManagerItem\u306B\u901A\u77E5\u3059\u308B\u3002\r\n\r\nconst
-    MaxHp = 100;\r\nlet hp = MaxHp;\r\nlet managerId =  _.sourceItemId;\nlet gameManagerId
-    = null;\nlet kills = 0;\r\n_.onReceive((messageType, arg, sender) => {\n    if
-    (messageType === \"InitPlayerScript\") {\n        gameManagerId = arg.gameManagerId;\n   
+  sourceCode: "const MaxHp = 100;\r\nlet hp = MaxHp;\r\nlet managerId = _.sourceItemId;\r\nlet
+    gameManagerId = null;\r\n\r\n_.onReceive((messageType, arg, sender) => {\r\n   
+    if (messageType === \"InitPlayerScript\") {\r\n        gameManagerId = arg.gameManagerId;\r\n   
     }\r\n    if (messageType === \"damage\") {\r\n        hp -= arg.value;\r\n       
     _.sendTo(arg.attacker, \"HitPlayerHp\", hp);\r\n        if (hp <= 0) {\r\n           
-    _.respawn();\r\n            hp = MaxHp;\r\n        }\r\n\r\n        if (managerId)
-    {\r\n            try {\r\n                _.sendTo(managerId, \"Damaged\", hp);\r\n           
-    } catch (e) {\r\n                _.log(\"\u9001\u4FE1\u30A8\u30E9\u30FC: \" +
-    e);\r\n            }\r\n        }\r\n    }\n    //\u653B\u6483\u3092\u4E0E\u3048\u305F\u4EBA\u306Ehp\u60C5\u5831\u3092\u53D7\u3051\u53D6\u308B\r\n   
-    if(messageType === \"HitPlayerHp\"){\r\n        if(arg <= 0){\n\t  kills++;\r\n           
-    _.sendTo(managerId, \"KilledEnemy\", kills);\n\t  if (gameManagerId) {\n               
-    try {\n                    _.sendTo(gameManagerId, \"playerKills\", kills);\n               
-    } catch (e) {\n                    _.log(\"GameManager\u3078\u306E\u9001\u4FE1\u30A8\u30E9\u30FC:
-    \" + e);\n                }\n            }\r\n        }\r\n    }\r\n});"
+    _.respawn();\r\n            hp = MaxHp;\r\n        }\r\n        if (managerId)
+    {\r\n            try { _.sendTo(managerId, \"Damaged\", hp); } catch (e) {}\r\n       
+    }\r\n    }\r\n    \r\n    // \u653B\u6483\u3092\u4E0E\u3048\u305F\u4EBA\u306Ehp\u60C5\u5831\u3092\u53D7\u3051\u53D6\u308B\r\n   
+    if (messageType === \"HitPlayerHp\") {\r\n        if (arg <= 0) {\r\n           
+    if (gameManagerId) {\r\n                try {\r\n                    _.sendTo(gameManagerId,
+    \"AddKillReport\", null);\r\n                } catch (e) {\r\n                   
+    _.log(\"GameManager\u3078\u306E\u9001\u4FE1\u30A8\u30E9\u30FC: \" + e);\r\n               
+    }\r\n            }\r\n        }\r\n    }\r\n    if (messageType === \"UpdateKillsUI\")
+    {\r\n        _.sendTo(managerId, \"UpdateKillsUI\", arg);\r\n    }\r\n\r\n});"
 --- !u!1001 &2708029093803619882
 PrefabInstance:
   m_ObjectHideFlags: 0
