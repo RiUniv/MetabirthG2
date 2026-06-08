@@ -406,6 +406,60 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &380546330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 380546331}
+  - component: {fileID: 380546332}
+  m_Layer: 0
+  m_Name: ReadyListText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &380546331
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380546330}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3.7, y: 3.7, z: 3.7}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1388425349}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -60.1, y: 57.4}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &380546332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380546330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 661c45a344104837b0ee4901951c608c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.World.Implements::ClusterVR.CreatorKit.World.Implements.TextView.TextView
+  textMesh: {fileID: 0}
+  text: ReadyListText
+  size: 1.78
+  textAnchor: 4
+  textAlignment: 0
+  color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &402662461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,89 +1107,6 @@ MonoBehaviour:
   worldItemReferences:
   - id: Spawner
     item: {fileID: 1621063163}
---- !u!1001 &848637261
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.188
-      objectReference: {fileID: 0}
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 858432226735235945, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870812077123213593, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: itemTemplateId.value
-      value: 12838599860615879131
-      objectReference: {fileID: 0}
-    - target: {fileID: 3097523293957027967, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: id.value
-      value: 8318545922204193309
-      objectReference: {fileID: 0}
-    - target: {fileID: 6729138146786886413, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: m_Name
-      value: HandGun_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8643564524482232829, guid: fd49810c7fe83be428b37a778b0c1aec,
-        type: 3}
-      propertyPath: animatorParameterName
-      value: Shoot
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fd49810c7fe83be428b37a778b0c1aec, type: 3}
 --- !u!1 &953416218
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,7 +1296,6 @@ GameObject:
   - component: {fileID: 1111324572}
   - component: {fileID: 1111324571}
   - component: {fileID: 1111324570}
-  - component: {fileID: 1111324576}
   - component: {fileID: 1111324569}
   - component: {fileID: 1111324568}
   - component: {fileID: 1111324575}
@@ -1364,13 +1334,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
   sourceCodeAsset: {fileID: 0}
-  sourceCode: "const gameManagerId = $.worldItemReference(\"GameManager\");\r\n$.onStart(()
-    => {\r\n    $.state.angle = 0;\r\n});\r\nlet isMatch = false;\r\n$.onInteract(()
-    => {\r\n    if(!isMatch){\r\n        $.subNode(\"Text\").setText(\"During the
-    match\");\r\n        gameManagerId.send(\"startMatch\",null);\r\n        isMatch
-    = true;\r\n    }else{\r\n        $.subNode(\"Text\").setText(\"Before the match
-    starts\");\r\n        gameManagerId.send(\"endMatch\",null);\r\n        isMatch
-    = false;\r\n    }\r\n    \r\n});"
+  sourceCode: "// swtichGame.js\r\nconst gameManagerId = $.worldItemReference(\"GameManager\");\r\n\r\n$.onStart(()
+    => {\r\n    // \u6E96\u5099\u5B8C\u4E86\u3057\u305F\u30D7\u30EC\u30A4\u30E4\u30FC\u306E\u8A18\u9332\u7528\u8F9E\u66F8\r\n   
+    $.state.readyPlayers = {};\r\n    \r\n    // \u3010\u8FFD\u52A0\u3011\u73FE\u5728\u8A66\u5408\u4E2D\u304B\u3069\u3046\u304B\u3092\u7BA1\u7406\u3059\u308B\u30D5\u30E9\u30B0\uFF08\u6700\u521D\u306F\u8A66\u5408\u524D\u306A\u306E\u3067false\uFF09\r\n   
+    $.state.isMatchOngoing = false; \r\n});\r\n\r\n$.onInteract((player) => {\r\n   
+    // \U0001F4A1\u3010\u6700\u91CD\u8981\u3011\u3082\u3057\u3059\u3067\u306B\u8A66\u5408\u4E2D\u306A\u3089\u3001\u89E6\u3089\u308C\u3066\u3082\u4F55\u3082\u305B\u305A\u306B\u3053\u3053\u3067\u51E6\u7406\u3092\u7D42\u4E86\u3059\u308B\uFF01\r\n   
+    if ($.state.isMatchOngoing) {\r\n        $.log(\"\u8A66\u5408\u4E2D\u306E\u305F\u3081\u3001\u6E96\u5099\u5B8C\u4E86\u30DC\u30BF\u30F3\u306F\u30ED\u30C3\u30AF\u3055\u308C\u3066\u3044\u307E\u3059\");\r\n       
+    return;\r\n    }\r\n\r\n    if (!player || !player.exists()) return;\r\n\r\n   
+    let readyList = $.state.readyPlayers ?? {};\r\n\r\n    // \u65E2\u306B\u6E96\u5099\u5B8C\u4E86\u3057\u3066\u3044\u308B\u5834\u5408\u306F\u300C\u30AD\u30E3\u30F3\u30BB\u30EB\u300D\u306B\u3059\u308B\r\n   
+    if (readyList[player.userId]) {\r\n        delete readyList[player.userId];\r\n       
+    $.log(`${player.userDisplayName} \u304C\u6E96\u5099\u5B8C\u4E86\u3092\u30AD\u30E3\u30F3\u30BB\u30EB\u3057\u307E\u3057\u305F`);\r\n   
+    } else {\r\n        readyList[player.userId] = player;\r\n        $.log(`${player.userDisplayName}
+    \u304C\u6E96\u5099\u5B8C\u4E86\u3057\u307E\u3057\u305F\uFF01`);\r\n    }\r\n   
+    $.state.readyPlayers = readyList;\r\n\r\n    // \u5168\u54E1\u63C3\u3063\u305F\u304B\u306E\u30C1\u30A7\u30C3\u30AF\uFF06\u30EA\u30B9\u30C8\u8868\u793A\u66F4\u65B0\r\n   
+    CheckAllPlayersReady();\r\n});\r\n\r\n$.onReceive((messageType, arg, sender)
+    => {\r\n    // \u8A66\u5408\u304C\u7D42\u4E86\u3057\u305F\u6642\u3001GameManager\u304B\u3089\u30EA\u30BB\u30C3\u30C8\u306E\u5408\u56F3\u304C\u6765\u305F\u3089\r\n   
+    if (messageType === \"ResetReadyStatus\") {\r\n        if(!$.state.isMatchOngoing)
+    return;\r\n        // \U0001F4A1\u3010\u8FFD\u52A0\u3011\u8A66\u5408\u304C\u7D42\u4E86\u3057\u305F\u306E\u3067\u3001\u30DC\u30BF\u30F3\u306E\u30ED\u30C3\u30AF\u3092\u89E3\u9664\u3059\u308B\r\n       
+    $.state.isMatchOngoing = false;\r\n\r\n        $.state.readyPlayers = {};\r\n       
+    // \u72B6\u614B\u3092\u30AF\u30EA\u30A2\u3057\u3066\u8868\u793A\u3092\u66F4\u65B0\u3059\u308B\r\n       
+    CheckAllPlayersReady();\r\n    }\r\n});\r\n\r\n/**\r\n * \u5168\u54E1\u304C\u6E96\u5099\u5B8C\u4E86\u3057\u305F\u304B\u30C1\u30A7\u30C3\u30AF\u3057\u3001\u30EA\u30B9\u30C8\u8868\u793A\u3092\u66F4\u65B0\u3059\u308B\u95A2\u6570\r\n
+    */\r\nfunction CheckAllPlayersReady() {\r\n    // \U0001F4A1\u3010\u8FFD\u52A0\u3011\u3082\u3057\u8A66\u5408\u4E2D\u306B\u306A\u3063\u3066\u3044\u305F\u3089\u3001\u3053\u306E\u5185\u90E8\u306E\u30C6\u30AD\u30B9\u30C8\u66F4\u65B0\u51E6\u7406\u306A\u3069\u3082\u30B9\u30AD\u30C3\u30D7\u3059\u308B\r\n   
+    if ($.state.isMatchOngoing) return;\r\n\r\n    // 1. \u4ECA\u30EF\u30FC\u30EB\u30C9\u306B\u3044\u308B\u5168\u54E1\u3092\u305D\u306E\u5834\u3067\u4E00\u672C\u91E3\u308A\r\n   
+    let allPlayers = $.getPlayersNear($.getPosition(), Infinity);\r\n    let totalPlayerCount
+    = allPlayers.length;\r\n\r\n    let readyList = $.state.readyPlayers ?? {};\r\n   
+    \r\n    // \u8868\u793A\u7528\u306E\u540D\u524D\u30EA\u30B9\u30C8\uFF08\u6587\u5B57\u5217\uFF09\u3092\u4F5C\u308B\u305F\u3081\u306E\u914D\u5217\r\n   
+    let readyNames = [];\r\n    let notReadyNames = [];\r\n    let readyCount = 0;\r\n\r\n   
+    // 2. \u30EF\u30FC\u30EB\u30C9\u306B\u3044\u308B\u5168\u54E1\u3092\u8D70\u67FB\u3057\u3066\u3001Ready\u72B6\u614B\u304B\u672AReady\u72B6\u614B\u304B\u306B\u632F\u308A\u5206\u3051\u308B\r\n   
+    allPlayers.forEach(player => {\r\n        if (player && player.exists()) {\r\n           
+    if (readyList[player.userId]) {\r\n                readyNames.push(`\u30FB${player.userDisplayName}`);\r\n               
+    readyCount++;\r\n            } else {\r\n                notReadyNames.push(`\u30FB${player.userDisplayName}`);\r\n           
+    }\r\n        }\r\n    });\r\n\r\n    // 3. \u9014\u4E2D\u3067\u843D\u3061\u305F\u4EBA\u3092readyList\u304B\u3089\u6383\u9664\u3059\u308B\u7528\r\n   
+    for (let id in readyList) {\r\n        let isStillHere = allPlayers.some(p =>
+    p.userId === id);\r\n        if (!isStillHere) {\r\n            delete readyList[id];\r\n       
+    }\r\n    }\r\n    $.state.readyPlayers = readyList;\r\n\r\n    // 4. \u30E1\u30A4\u30F3\u30DC\u30BF\u30F3\u306E\u30C6\u30AD\u30B9\u30C8\u66F4\u65B0\r\n   
+    $.subNode(\"Text\").setText(`Ready? (${readyCount} / ${totalPlayerCount})`);\r\n\r\n   
+    // 5. \u305D\u308C\u305E\u308C\u306E\u30EA\u30B9\u30C8\u3092\u6539\u884C\u30B3\u30FC\u30C9(\\n)\u3067\u7E4B\u3044\u30673D\u30C6\u30AD\u30B9\u30C8\u306B\u8868\u793A\r\n   
+    let readyTextStr = readyNames.length > 0 ? readyNames.join(\"\\n\") : \"\uFF08\u306A\u3057\uFF09\";\r\n   
+    let notReadyTextStr = notReadyNames.length > 0 ? notReadyNames.join(\"\\n\")
+    : \"\uFF08\u306A\u3057\uFF09\";\r\n\r\n    if ($.subNode(\"ReadyListText\"))
+    $.subNode(\"ReadyListText\").setText(readyTextStr);\r\n    if ($.subNode(\"NotReadyListText\"))
+    $.subNode(\"NotReadyListText\").setText(notReadyTextStr);\r\n\r\n    // 6. \u30D7\u30EC\u30A4\u30E4\u30FC\u304C1\u4EBA\u4EE5\u4E0A\u3044\u3066\u3001\u5168\u54E1\u306E\u6E96\u5099\u304C\u5B8C\u4E86\u3057\u305F\u3089GameManager\u3092\u53E9\u304F\r\n   
+    if (totalPlayerCount > 0 && readyCount === totalPlayerCount) {\r\n        $.log(\"\u5168\u54E1\u306E\u6E96\u5099\u5B8C\u4E86\uFF01GameManager\u3078\u4FE1\u53F7\u3092\u98DB\u3070\u3057\u307E\u3059\u3002\");\r\n       
+    \r\n        // \U0001F4A1\u3010\u91CD\u8981\u3011GameManager\u306B\u9001\u308B\u76F4\u524D\u3067\u3001\u30DC\u30BF\u30F3\u81EA\u4F53\u3092\u300C\u8A66\u5408\u4E2D\u72B6\u614B\uFF08\u30ED\u30C3\u30AF\uFF09\u300D\u306B\u5909\u3048\u308B\uFF01\r\n       
+    $.state.isMatchOngoing = true;\r\n\r\n        // \u770B\u677F\u306E\u30C6\u30AD\u30B9\u30C8\u3092\u300C\u8A66\u5408\u4E2D\u300D\u306B\u56FA\u5B9A\u3059\u308B\r\n       
+    $.subNode(\"Text\").setText(\"During the match\");\r\n        if ($.subNode(\"ReadyListText\"))
+    $.subNode(\"ReadyListText\").setText(\"\u30FC\u30FC\u8A66\u5408\u4E2D\u30FC\u30FC\");\r\n       
+    if ($.subNode(\"NotReadyListText\")) $.subNode(\"NotReadyListText\").setText(\"\u30FC\u30FC\u8A66\u5408\u4E2D\u30FC\u30FC\");\r\n\r\n       
+    if (gameManagerId) {\r\n            gameManagerId.send(\"startMatch\", null);\r\n       
+    }\r\n    }\r\n}"
 --- !u!114 &1111324570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1507,20 +1519,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1111324576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1111324567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 557c1287071b147459bb6f001560c6e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.MovableItem
-  item: {fileID: 1111324570}
-  rb: {fileID: 1111324575}
 --- !u!1 &1111471334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1695,7 +1693,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 84.3}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1276410692
@@ -1848,12 +1846,14 @@ RectTransform:
   m_Children:
   - {fileID: 460891123}
   - {fileID: 1276410691}
+  - {fileID: 380546331}
+  - {fileID: 1713748881}
   m_Father: {fileID: 1111324574}
   m_LocalEulerAnglesHint: {x: 0, y: -63.2, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1.5}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: 2.31}
+  m_SizeDelta: {x: 222.13, y: 208.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1388425350
 MonoBehaviour:
@@ -2122,6 +2122,172 @@ MonoBehaviour:
     value: 15620314351462886670
   itemName: 
   size: {x: 0, y: 0, z: 0}
+--- !u!1 &1571015716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1571015717}
+  - component: {fileID: 1571015720}
+  - component: {fileID: 1571015719}
+  - component: {fileID: 1571015718}
+  - component: {fileID: 1571015722}
+  - component: {fileID: 1571015721}
+  - component: {fileID: 1571015723}
+  m_Layer: 0
+  m_Name: GameEnder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1571015717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571015716}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.44279993, z: -5.66}
+  m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1571015718
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571015716}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!23 &1571015719
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571015716}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1571015720
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571015716}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1571015721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571015716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61061896c654489a41575fc291bf4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
+  sourceCodeAsset: {fileID: 0}
+  sourceCode: "const gameManagerId = $.worldItemReference(\"GameManager\");\nconst
+    switchButtonId = $.worldItemReference(\"SwitchButton\");\n\n$.onInteract(() =>
+    {\r\n    if (switchButtonId) {\n        switchButtonId.send(\"ResetReadyStatus\",
+    null);\n        gameManagerId.send(\"endMatch\",null);\n    }\r\n});"
+--- !u!114 &1571015722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571015716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3977a5e65e72f4db4b85ddba10d48dd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.Item
+  id:
+    value: 13070942787796428574
+  itemName: 
+  size: {x: 0, y: 0, z: 0}
+--- !u!114 &1571015723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571015716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49554f6eafb04d538a589436719e8fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.WorldItemReferenceList
+  worldItemReferences:
+  - id: GameManager
+    item: {fileID: 700286540}
+  - id: SwitchButton
+    item: {fileID: 1111324570}
 --- !u!1 &1621063161
 GameObject:
   m_ObjectHideFlags: 0
@@ -2256,6 +2422,60 @@ MonoBehaviour:
   worldItemReferences:
   - id: GameManager
     item: {fileID: 700286540}
+--- !u!1 &1713748880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1713748881}
+  - component: {fileID: 1713748882}
+  m_Layer: 0
+  m_Name: NotReadyListText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1713748881
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713748880}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 3.7, y: 3.7, z: 3.7}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1388425349}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 51.9, y: 57.4}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1713748882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713748880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 661c45a344104837b0ee4901951c608c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.World.Implements::ClusterVR.CreatorKit.World.Implements.TextView.TextView
+  textMesh: {fileID: 0}
+  text: ReadyListText
+  size: 1.78
+  textAnchor: 4
+  textAlignment: 0
+  color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1758254358
 GameObject:
   m_ObjectHideFlags: 0
@@ -2630,6 +2850,99 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd49810c7fe83be428b37a778b0c1aec, type: 3}
+--- !u!1001 &5209631116762714699
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 963053582984959713, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 963053582984959713, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.188
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489338467008824053, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487658022516967870, guid: 651be2f8a5c67244a96c7248a69afc32,
+        type: 3}
+      propertyPath: m_Name
+      value: M16
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 651be2f8a5c67244a96c7248a69afc32, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2643,6 +2956,7 @@ SceneRoots:
   - {fileID: 1621063164}
   - {fileID: 402662470}
   - {fileID: 5131848161340167223}
-  - {fileID: 848637261}
+  - {fileID: 5209631116762714699}
   - {fileID: 700286541}
   - {fileID: 1111324574}
+  - {fileID: 1571015717}
