@@ -14,12 +14,25 @@ const stagePoints = [
     $.worldItemReference("StagePoint_3")  // ステージ内の復活地点3
 ];
 
-const TargetKills = 5;
+const TargetKills = 3;
 
 $.onStart(() => {
     //辞書
     $.state.leaderboard = {};
     $.state.matchPlayers = {};
+    $.state.cachedStagePositions = {};
+
+    if (lobbyPointId) {
+        lobbyPointId.send("RequestLocation", { pointIndex: "lobby" });
+    }
+
+    for(let i = 0;i<stagePoints.length;i++){
+        let pHandle = stagePoints[i];
+        if (pHandle) {
+            // ポイントアイテムにインデックス番号を添えてメッセージを送信 
+            pHandle.send("RequestLocation", { pointIndex: i });
+        }
+    }
     
     for (let i = 0; i < ranks.length; i++) {
         ranks[i].setText(`${i + 1}位: -----`);
@@ -27,6 +40,16 @@ $.onStart(() => {
 });
 
 $.onReceive((messageType, arg, sender) => {
+    if (messageType === "ReplyLocation") {
+        let cachedPositions = $.state.cachedStagePositions ?? {};
+        
+        // 送られてきた番号の場所に、座標データを保存する
+        cachedPositions[arg.pointIndex] = {
+            position: arg.position,
+            rotation: arg.rotation
+        };
+        $.state.cachedStagePositions = cachedPositions;
+    }
 
     // PlayerScriptからキル報告が届いたとき
     if (messageType === "AddKillReport") {
@@ -63,7 +86,7 @@ $.onReceive((messageType, arg, sender) => {
         if (!matchPlayers[sender.userId]) return;
 
         // ランダムなリスポーン地点の座標を取得して送り返す
-        let teleportData = GetRandomStagePoint();
+        let teleportData = GetRandomCachedPoint();
         sender.send("TeleportToRespawn", teleportData);
     }
 
@@ -106,52 +129,57 @@ function UpdateRankings() {
     }
 }
 
-function GetRandomStagePoint() {
-    let validPoints = stagePoints.filter(p => p !== null);
+function GetRandomCachedPoint() {
+    let cached = $.state.cachedStagePositions ?? {};
     
-    // Unity側で1つも登録されていない場合のセーフティ座標
+    let validPoints = [];
+    for (let key in cached) {
+        // 💡"lobby" 以外のステージ用の数値インデックスデータだけを配列にピックアップする
+        if (cached[key] && key !== "lobby") {
+            validPoints.push(cached[key]);
+        }
+    }
+
+    // 万が一、1つも溜まっていなかった場合のセーフティデフォルト座標
     let pos = new Vector3(0, 10, 0);
     let rot = $.getRotation();
 
     if (validPoints.length > 0) {
-        let chosenPoint = validPoints[Math.floor(Math.random() * validPoints.length)];
-        pos = chosenPoint.getPosition();
-        rot = chosenPoint.getRotation();
+        let chosen = validPoints[Math.floor(Math.random() * validPoints.length)];
+        pos = chosen.position;
+        rot = chosen.rotation;
     }
 
     return { position: pos, rotation: rot };
 }
-
 function StartMatch() {
-    // ランキングボードの初期化など
     $.state.leaderboard = {};
     UpdateRankings();
 
+    // 1. 今この瞬間にワールドにいる全員を「生きたハンドル」の状態で取得
     let allPlayers = $.getPlayersNear($.getPosition(), Infinity);
     let matchPlayers = {};
 
+    // 2. 生きたハンドルが有効なうちに、先に全員をバラバラにワープさせる
     allPlayers.forEach(player => {
         if (player && player.exists()) {
-            // 参加者ロック用の辞書に登録
             matchPlayers[player.userId] = player; 
 
-            let startPointData = GetRandomStagePoint(); 
+            //キャッシュされた座標からランダムに取得してワープ
+            let startPointData = GetRandomCachedPoint(); 
             player.setPosition(startPointData.position);
             player.setRotation(startPointData.rotation);
-            
-            $.log(`${player.userDisplayName} をステージへワープさせました`);
         }
     });
+
     $.state.matchPlayers = matchPlayers;
 
-    // 監視・生成器（Spawner）に「マッチスタート（自動生成してね）」と送る
     if (spawnerId) {
         spawnerId.send("StartMatch", null);
     }
 }
 
 function EndMatch() {
-    // 監視・生成器（Spawner）に「マッチ終了（全員消えてね）」と送る
     if (spawnerId) {
         spawnerId.send("EndMatch", null);
     }
@@ -161,8 +189,15 @@ function EndMatch() {
     }
 
     let matchPlayers = $.state.matchPlayers ?? {};
-    let lobbyPos = lobbyPointId ? lobbyPointId.getPosition() : new Vector3(0, 1, 0);
-    let lobbyRot = lobbyPointId ? lobbyPointId.getRotation() : $.getRotation();
+    let cached = $.state.cachedStagePositions ?? {};
+
+    let lobbyPos = new Vector3(0, 1, 0);
+    let lobbyRot = $.getRotation();
+
+    if (cached["lobby"]) {
+        lobbyPos = cached["lobby"].position;
+        lobbyRot = cached["lobby"].rotation;
+    }
 
     for (let userId in matchPlayers) {
         let player = matchPlayers[userId];
