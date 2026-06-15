@@ -63,7 +63,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e61061896c654489a41575fc291bf4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
-  sourceCodeAsset: {fileID: 0}
+  sourceCodeAsset: {fileID: 5022602860645237092, guid: 5e7f82f3d811d87449dfc8624723a979,
+    type: 3}
   sourceCode: "$.onReceive((messageType, arg, sender) => {\r\n    if (messageType
     === \"init\") {\r\n        const targetPlayer = arg.player;\r\n        $.requestOwner(targetPlayer);\r\n       
     $.log(\"player script\u3092\u30BB\u30C3\u30C8\u3057\u307E\u3057\u305F\");\r\n       
@@ -91,7 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb59730322447a7a13c40b87493e196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.PlayerScript
-  sourceCodeAsset: {fileID: 0}
+  sourceCodeAsset: {fileID: 5022602860645237092, guid: 449f79e3c85f980488dd499f74dc1604,
+    type: 3}
   sourceCode: "const MaxHp = 100;\r\nlet hp = MaxHp;\r\nlet managerId = _.sourceItemId;\r\nlet
     gameManagerId = null;\r\n\r\n_.onReceive((messageType, arg, sender) => {\r\n   
     if (messageType === \"InitPlayerScript\") {\r\n        gameManagerId = arg.gameManagerId;\r\n   

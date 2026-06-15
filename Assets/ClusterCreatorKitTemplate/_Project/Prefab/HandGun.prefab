@@ -340,7 +340,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e61061896c654489a41575fc291bf4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
-  sourceCodeAsset: {fileID: 0}
+  sourceCodeAsset: {fileID: 5022602860645237092, guid: 0697f044d95bc444cba3bdd9211330d3,
+    type: 3}
   sourceCode: "const maxDistance = 30;\nconst Damage = 10;\n\n$.onStart(() => {\n   
     $.state.Bullets = 10;\n    $.state.maxBullets = 20;\n    $.setStateCompat(\"owner\",\"RemainBullets\",$.state.Bullets);\n});\n\n$.onUse(isDown
     => {\n  if (!isDown) return;\n  if ($.state.Bullets > 0) Shoot();\n  else {\n   
