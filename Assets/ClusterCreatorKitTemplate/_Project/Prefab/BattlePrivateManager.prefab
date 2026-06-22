@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.Item
   id:
     value: 14753447783064787877
-  itemName: 
+  itemName: "\u500B\u4EBA\u30DE\u30CD\u30FC\u30B8\u30E3"
   size: {x: 0, y: 0, z: 0}
 --- !u!114 &5114328710022157857
 MonoBehaviour:

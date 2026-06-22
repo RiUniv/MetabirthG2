@@ -89,11 +89,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Take 001
+      name: Reload
       takeName: Take 001
       internalID: 3060872287085348379
-      firstFrame: 79
-      lastFrame: 114
+      firstFrame: 80
+      lastFrame: 107
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

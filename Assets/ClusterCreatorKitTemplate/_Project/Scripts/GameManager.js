@@ -170,7 +170,6 @@ function StartMatch() {
             //キャッシュされた座標からランダムに取得してワープ
             let startPointData = GetRandomCachedPoint(); 
             player.setPosition(startPointData.position);
-            player.setRotation(startPointData.rotation);
         }
     });
 
@@ -205,7 +204,6 @@ function EndMatch() {
         let player = matchPlayers[userId];
         if (player && player.exists()) {
             player.setPosition(lobbyPos);
-            player.setRotation(lobbyRot);
         }
     }
 
