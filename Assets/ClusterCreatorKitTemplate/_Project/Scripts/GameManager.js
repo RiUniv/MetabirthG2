@@ -72,6 +72,8 @@ $.onReceive((messageType, arg, sender) => {
         // 3. キルしたプレイヤーの「個別マネージャー」へデータを逆流させる
         let latestKills = currentBoard[pId].kills;
         sender.send("UpdateKillsUI", latestKills);
+
+        //キル数上限で試合終了
         if (latestKills >= TargetKills) {
             EndMatch();
             return;
@@ -174,8 +176,8 @@ function StartMatch() {
 
     $.state.matchPlayers = matchPlayers;
 
-    if (spawnerId) {
-        spawnerId.send("StartMatch", null);
+if (spawnerId) {
+        spawnerId.send("StartMatch", { matchPlayers: matchPlayers});
     }
 }
 

@@ -35,37 +35,35 @@ $.onInteract((player) => {
 });
 
 $.onReceive((messageType, arg, sender) => {
-    // 試合が終了した時、GameManagerからリセットの合図が来たら
+
     if (messageType === "ResetReadyStatus") {
         if(!$.state.isMatchOngoing) return;
-        // 💡【追加】試合が終了したので、ボタンのロックを解除する
         $.state.isMatchOngoing = false;
-
         $.state.readyPlayers = {};
-        // 状態をクリアして表示を更新する
         CheckAllPlayersReady();
+    }
+
+    if (messageType === "RequestStartCheck") {
+        if ($.state.isMatchOngoing) return;
+        CheckAllPlayersReady(true);
     }
 });
 
 /**
  * 全員が準備完了したかチェックし、リスト表示を更新する関数
  */
-function CheckAllPlayersReady() {
-    // 💡【追加】もし試合中になっていたら、この内部のテキスト更新処理などもスキップする
+function CheckAllPlayersReady(forceStart = false) {
     if ($.state.isMatchOngoing) return;
 
-    // 1. 今ワールドにいる全員をその場で一本釣り
     let allPlayers = $.getPlayersNear($.getPosition(), Infinity);
     let totalPlayerCount = allPlayers.length;
 
     let readyList = $.state.readyPlayers ?? {};
     
-    // 表示用の名前リスト（文字列）を作るための配列
     let readyNames = [];
     let notReadyNames = [];
     let readyCount = 0;
 
-    // 2. ワールドにいる全員を走査して、Ready状態か未Ready状態かに振り分ける
     allPlayers.forEach(player => {
         if (player && player.exists()) {
             if (readyList[player.userId]) {
@@ -77,7 +75,6 @@ function CheckAllPlayersReady() {
         }
     });
 
-    // 3. 途中で落ちた人をreadyListから掃除する用
     for (let id in readyList) {
         let isStillHere = allPlayers.some(p => p.userId === id);
         if (!isStillHere) {
@@ -86,24 +83,18 @@ function CheckAllPlayersReady() {
     }
     $.state.readyPlayers = readyList;
 
-    // 4. メインボタンのテキスト更新
     $.subNode("Text").setText(`Ready? (${readyCount} / ${totalPlayerCount})`);
 
-    // 5. それぞれのリストを改行コード(\n)で繋いで3Dテキストに表示
     let readyTextStr = readyNames.length > 0 ? readyNames.join("\n") : "（なし）";
     let notReadyTextStr = notReadyNames.length > 0 ? notReadyNames.join("\n") : "（なし）";
 
     if ($.subNode("ReadyListText")) $.subNode("ReadyListText").setText(readyTextStr);
     if ($.subNode("NotReadyListText")) $.subNode("NotReadyListText").setText(notReadyTextStr);
 
-    // 6. プレイヤーが1人以上いて、全員の準備が完了したらGameManagerを叩く
-    if (totalPlayerCount > 0 && readyCount === totalPlayerCount) {
-        $.log("全員の準備完了！GameManagerへ信号を飛ばします。");
-        
-        // 💡【重要】GameManagerに送る直前で、ボタン自体を「試合中状態（ロック）」に変える！
+    if (forceStart && totalPlayerCount > 0 && readyCount === totalPlayerCount) {
+
         $.state.isMatchOngoing = true;
 
-        // 看板のテキストを「試合中」に固定する
         $.subNode("Text").setText("During the match");
         if ($.subNode("ReadyListText")) $.subNode("ReadyListText").setText("ーー試合中ーー");
         if ($.subNode("NotReadyListText")) $.subNode("NotReadyListText").setText("ーー試合中ーー");
