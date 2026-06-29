@@ -11,6 +11,7 @@ $.onReceive((messageType, arg, sender) => {
     if (messageType === "StartMatch") {
 
         let matchPlayers = arg.matchPlayers ?? {}; //参加者のリスト
+        let pairs = $.state.playerManagerPairs ?? {}; // 既存の全マネージャーのストック
 
         let debugNames = [];
         for (let id in matchPlayers) {
@@ -30,8 +31,15 @@ $.onReceive((messageType, arg, sender) => {
             if (player && player.exists()) {
                 let pairs = $.state.playerManagerPairs ?? {};
 
-                if (pairs[player.userId]) continue; 
-
+                //もしすでにこの人のマネージャーがストックにある（過去の試合で生成済み）なら
+                if (pairs[player.userId] && pairs[player.userId].managerHandle.exists()) {
+                    $.log(`${player.userDisplayName} の既存マネージャーを再利用します`);
+                    
+                    // 既存のマネージャーへもう一度動き出してと通知を送る（再生成はしない）
+                    pairs[player.userId].managerHandle.send("ReStartMatch", { gameManagerId: gameManagerId });
+                    continue; // 次の人の処理へスキップ
+                }
+                //過去に一度もマネージャーが作られていない人だけ、ここへ進んで新しく生成する
                 const templateId = new WorldItemTemplateId("BattlePrivateManager");
                 const commItem = $.createItem(templateId, player.getPosition(), player.getRotation());
 
@@ -54,10 +62,9 @@ $.onReceive((messageType, arg, sender) => {
         for (let userId in pairs) {
             let mHandle = pairs[userId].managerHandle;
             if (mHandle && mHandle.exists()) {
-                mHandle.send("DestroyYourself", null);
+                mHandle.send("SleepYourself", null); // スリープさせる
             }
         }
-        $.state.playerManagerPairs = {};
         
         if ($.subNode("Text")) {
             $.subNode("Text").setText("試合終了（待機中）");
@@ -86,6 +93,7 @@ function CheckActivePairs() {
 
         if (!player || !player.exists()) {
             if (mHandle && mHandle.exists()) {
+                mHandle.send("SleepYourself", null);
                 mHandle.send("DestroyYourself", null);
             }
             delete pairs[userId];

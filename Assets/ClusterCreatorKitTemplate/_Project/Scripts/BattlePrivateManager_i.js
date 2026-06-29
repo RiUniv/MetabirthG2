@@ -2,32 +2,59 @@ $.onStart(() => {
     $.state.targetPlayer = null;
     $.state.gameManagerId = null;
     $.state.isScriptInitialized = false;
+    $.state.isMatchActive = false;
 });
 
 $.onReceive((messageType, arg, sender) => {
+    //初回生成のみ
     if (messageType === "init") {
         const targetPlayer = arg.player;
         if (!targetPlayer) return;
 
         $.requestOwner(targetPlayer);
 
-        // 情報をstateに保存して、各プレイヤーの端末の onUpdate に処理をバトンタッチする
         $.state.targetPlayer = targetPlayer;
         $.state.gameManagerId = arg.gameManagerId;
+        $.state.isMatchActive = true; // 試合中状態にする
+    }
+
+    //二回目以降、再利用されるときにSpawnerから届く
+    if (messageType === "ReStartMatch") {
+        $.state.isMatchActive = true;
+        $.state.gameManagerId = arg.gameManagerId;
+        
+        // プレイヤーのHP表記を100（初期値）にリセットしてUIを更新
+        $.setStateCompat("owner", "playerhp", 100);
+        
+        // PlayerScript側に2試合目が始まったと通知してHPをリセットさせる
+        const targetPlayer = $.state.targetPlayer;
+        if (targetPlayer && targetPlayer.exists() && arg.gameManagerId) {
+            targetPlayer.send("InitPlayerScript", {
+                gameManagerId: arg.gameManagerId
+            });
+        }
     }
 
     if (messageType === "Damaged") {
+        if (!$.state.isMatchActive) return;
         $.sendSignalCompat("owner", "Damaged");
         $.setStateCompat("owner", "playerhp", arg);
     }
 
     if (messageType === "UpdateKillsUI") {
+        if (!$.state.isMatchActive) return;
         $.setStateCompat("owner", "playerKills", arg);
     }
 
+    //試合終了後のスリープ
+    if (messageType === "SleepYourself") {
+        $.state.isMatchActive = false;
+        
+        // 画面のUIなどを非表示にする、あるいはリセットする
+        $.setStateCompat("owner", "playerhp", 0);
+    }
     if (messageType === "DestroyYourself") {
-        $.log("管理側からの命令により、自身を破棄します。");
-        $.destroy(); 
+        $.destroy(); // ログアウト時のみ完全に消滅
     }
 }, { player: true });
 
