@@ -29,7 +29,7 @@ $.onReceive((messageType, arg, sender) => {
         $.log("管理側からの命令により、自身を破棄します。");
         $.destroy(); 
     }
-});
+}, { player: true });
 
 $.onUpdate((deltaTime) => {
     // 既に自分の端末でPlayerScriptの付与が終わっているならスルー
