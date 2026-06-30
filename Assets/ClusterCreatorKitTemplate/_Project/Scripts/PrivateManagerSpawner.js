@@ -93,7 +93,6 @@ function CheckActivePairs() {
 
         if (!player || !player.exists()) {
             if (mHandle && mHandle.exists()) {
-                mHandle.send("SleepYourself", null);
                 mHandle.send("DestroyYourself", null);
             }
             delete pairs[userId];

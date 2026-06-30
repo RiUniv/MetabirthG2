@@ -36,6 +36,7 @@ $.onReceive((messageType, arg, sender) => {
     }
 
     if (messageType === "Damaged") {
+        $.log("manager_i:ダメージメッセージ受信 現在のhp:" + arg);
         if (!$.state.isMatchActive) return;
         $.sendSignalCompat("owner", "Damaged");
         $.setStateCompat("owner", "playerhp", arg);
@@ -56,7 +57,7 @@ $.onReceive((messageType, arg, sender) => {
     if (messageType === "DestroyYourself") {
         $.destroy(); // ログアウト時のみ完全に消滅
     }
-}, { player: true });
+}, { player: false });
 
 $.onUpdate((deltaTime) => {
     // 既に自分の端末でPlayerScriptの付与が終わっているならスルー
@@ -67,7 +68,7 @@ $.onUpdate((deltaTime) => {
     if (!targetPlayer || !targetPlayer.exists()) return;
 
     if ($.getOwner() && $.getOwner().userId === targetPlayer.userId) {
-        
+        $.log("manager_i: setPlayerScriptを実行します　対象:" + targetPlayer.userDisplayName);
         // 自分の端末で、自分自身にPlayerScriptをセット
         $.setPlayerScript(targetPlayer);
 
@@ -75,6 +76,7 @@ $.onUpdate((deltaTime) => {
         $.state.isScriptInitialized = true;
 
         if (gManagerId) {
+             $.log("manager_i: plalyerScriptへinitPlayerScriptを送信します GManagerID" + gManagerId);
             targetPlayer.send("InitPlayerScript", {
                 gameManagerId: gManagerId
             });

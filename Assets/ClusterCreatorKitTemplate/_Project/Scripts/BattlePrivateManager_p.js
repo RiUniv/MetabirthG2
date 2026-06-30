@@ -5,9 +5,11 @@ let gameManagerId = null;
 
 _.onReceive((messageType, arg, sender) => {
     if (messageType === "InitPlayerScript") {
+        _.log("Player_p: InitPlayerScriptを受信　初期化完了 GManagerID:" +arg.gameManagerId);
         gameManagerId = arg.gameManagerId;
     }
     if (messageType === "damage") {
+        _.log("Player_p: 弾が当たってdamageメッセージを受信しました ダメージ値:" +arg.value);
         hp -= arg.value;
         _.sendTo(arg.attacker, "HitPlayerHp", hp);
         if (hp <= 0) {
@@ -32,6 +34,7 @@ _.onReceive((messageType, arg, sender) => {
         if (arg <= 0) {
             if (gameManagerId) {
                 try {
+                    _.log("Player_p: GameManagerへ送信します。送信値:" +hp);
                     _.sendTo(gameManagerId, "AddKillReport", null);
                 } catch (e) {
                     _.log("GameManagerへの送信エラー: " + e);
