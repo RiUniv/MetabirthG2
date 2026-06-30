@@ -92,7 +92,16 @@ $.onReceive((messageType, arg, sender) => {
         sender.send("TeleportToRespawn", teleportData);
     }
 
+
+    //MatchReady.jsから送られる
+    //全員が準備完了して試合開始ボタンが押された合図
     if (messageType === "startMatch") {
+        PrepareMatch();
+    }
+
+    //PrivateManagerSpawnerから送られる
+    //全員のPrivateManagerが正しくセットアップされた合図
+    if (messageType === "ReadyToStartMatch") {
         StartMatch();
     }
 
@@ -155,28 +164,37 @@ function GetRandomCachedPoint() {
     return { position: pos, rotation: rot };
 }
 function StartMatch() {
+    let matchPlayers = $.state.matchPlayers ?? {};
+
+    // 確定している参加者だけを、安全にランダムリスポーン地点へワープさせる
+    for (let userId in matchPlayers) {
+        let player = matchPlayers[userId];
+        if (player && player.exists()) {
+            let startPointData = GetRandomCachedPoint(); 
+            player.setPosition(startPointData.position);
+        }
+    }
+}
+
+function PrepareMatch() {
     $.state.leaderboard = {};
     UpdateRankings();
 
-    // 1. 今この瞬間にワールドにいる全員を「生きたハンドル」の状態で取得
+    // 今この瞬間にワールドにいる全員を取得してロック
     let allPlayers = $.getPlayersNear($.getPosition(), Infinity);
     let matchPlayers = {};
 
-    // 2. 生きたハンドルが有効なうちに、先に全員をバラバラにワープさせる
     allPlayers.forEach(player => {
         if (player && player.exists()) {
             matchPlayers[player.userId] = player; 
-
-            //キャッシュされた座標からランダムに取得してワープ
-            let startPointData = GetRandomCachedPoint(); 
-            player.setPosition(startPointData.position);
         }
     });
 
     $.state.matchPlayers = matchPlayers;
 
-if (spawnerId) {
-        spawnerId.send("StartMatch", { matchPlayers: matchPlayers});
+    // Spawnerに「この人たちのマネージャーを順番に作って」と命令(まだワープはさせない)
+    if (spawnerId) {
+        spawnerId.send("StartMatch", { matchPlayers: matchPlayers });
     }
 }
 

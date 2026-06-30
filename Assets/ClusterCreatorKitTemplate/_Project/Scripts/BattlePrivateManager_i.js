@@ -1,8 +1,10 @@
 $.onStart(() => {
     $.state.targetPlayer = null;
     $.state.gameManagerId = null;
+    $.state.spawnerId = null;
     $.state.isScriptInitialized = false;
     $.state.isMatchActive = false;
+    $.state.checkTimer = 0;
 });
 
 
@@ -14,17 +16,19 @@ $.onReceive((messageType, arg, sender) => {
         $.state.targetPlayer = targetPlayer;
         $.state.debugLoggerId = arg.debugLoggerId;
         $.state.gameManagerId = arg.gameManagerId;
+        $.state.spawnerId = arg.spawnerId;
         $.state.isMatchActive = true; // 試合中状態にする
+        $.state.checkTimer = 0;
 
-        $.requestOwner(targetPlayer);
-        SendToLogger(`[${targetPlayer.userDisplayName}のマネージャー] init受信。オーナー変更を要請しました`);
-        CheckAndApplyScript();
+        SendToLogger(`[${targetPlayer.userDisplayName}のマネージャー] init受信`);
     }
 
     //二回目以降、再利用されるときにSpawnerから届く
     if (messageType === "ReStartMatch") {
         $.state.isMatchActive = true;
         $.state.gameManagerId = arg.gameManagerId;
+        $.state.checkTimer = 0;
+        
         /////　デバッグ用
         let currentOwner = $.getOwner();
         let ownerName = currentOwner ? currentOwner.userDisplayName : "★null";
@@ -74,7 +78,14 @@ $.onReceive((messageType, arg, sender) => {
 
 $.onUpdate(deltaTime => {
     if (!$.state.isScriptInitialized && $.state.isMatchActive) {
-        CheckAndApplyScript();
+        let checkTimer = $.state.checkTimer ?? 0;
+        checkTimer += deltaTime;
+
+        if (checkTimer >= 1.5) { // 1.5秒ごとにチェック
+            CheckAndApplyScript();
+            checkTimer = 0;
+        }
+        $.state.checkTimer = checkTimer;
     }
 });
 
@@ -83,28 +94,32 @@ function CheckAndApplyScript() {
 
     const targetPlayer = $.state.targetPlayer;
     const gManagerId = $.state.gameManagerId;
+    const spawnerId = $.state.spawnerId;
+
     if (!targetPlayer || !targetPlayer.exists()) return;
 
-    // 💡【核心】現在の実行スレッドのオーナーが null だった場合は、
-    // 処理を完全に諦めて return するのではなく、強制的に targetPlayer（本人）に再度オーナーを請求し直して、同期の強制復帰を試みる
     let currentOwner = $.getOwner();
-    if (!currentOwner) {
+    if (!currentOwner || currentOwner.userId !== targetPlayer.userId) {
         $.requestOwner(targetPlayer);
+        SendToLogger(`${targetPlayer.userDisplayName} にownerリクエストを送信`);
         return; 
     }
 
-    // 本人の端末であることが確定した場合のみ、PlayerScriptを適用
-    if (currentOwner.userId === targetPlayer.userId) {
-        $.setPlayerScript(targetPlayer);
-        $.state.isScriptInitialized = true; // 確定ロック
+    /////ここからsetPlayerScriptが確定した状態/////
+    $.setPlayerScript(targetPlayer);
+    $.state.isScriptInitialized = true; // 確定ロック
         
-        SendToLogger(`${targetPlayer.userDisplayName} にPlayerScript適用`);
+    SendToLogger(`${targetPlayer.userDisplayName} にPlayerScript適用`);
 
-        if (gManagerId) {
-            targetPlayer.send("InitPlayerScript", {
-                gameManagerId: gManagerId
-            });
-        }
+    //生成元(PrivateManagerSpawner)に向けてセットアップが終わった合図を出す。
+    if (spawnerId) {
+        spawnerId.send("ManagerReady", { userId: targetPlayer.userId, userName: targetPlayer.userDisplayName });
+    }
+
+    if (gManagerId) {
+        targetPlayer.send("InitPlayerScript", {
+            gameManagerId: gManagerId
+        });
     }
 }
 
