@@ -5,7 +5,7 @@ let gameManagerId = null;
 
 _.onReceive((messageType, arg, sender) => {
     if (messageType === "InitPlayerScript") {
-        _.log("Player_p: InitPlayerScriptを受信　初期化完了 GManagerID:" +arg.gameManagerId);
+        _.log("Player_p: InitPlayerScriptを受信　初期化完了 sender:" +sender);
         gameManagerId = arg.gameManagerId;
     }
     if (messageType === "damage") {
@@ -20,6 +20,8 @@ _.onReceive((messageType, arg, sender) => {
         }
         if (managerId) {
             try { _.sendTo(managerId, "Damaged", hp); } catch (e) {}
+        }else {
+                 _.log("Player_p: GameManagerがnullです");
         }
     }
 

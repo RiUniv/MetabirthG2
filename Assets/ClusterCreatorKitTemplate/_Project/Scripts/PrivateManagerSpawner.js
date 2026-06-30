@@ -1,4 +1,5 @@
 const gameManagerId = $.worldItemReference("GameManager");
+const debugLoggerId = $.worldItemReference("DebugLogger");
 
 $.onStart(() => {
     $.state.playerManagerPairs = {};
@@ -42,6 +43,7 @@ $.onReceive((messageType, arg, sender) => {
                 //過去に一度もマネージャーが作られていない人だけ、ここへ進んで新しく生成する
                 const templateId = new WorldItemTemplateId("BattlePrivateManager");
                 const commItem = $.createItem(templateId, player.getPosition(), player.getRotation());
+                SendToLogger(`Private Manager Spawner : [${player.userDisplayName}のマネージャー] を生成しました。`);
 
                 pairs[player.userId] = {
                     player: player,
@@ -50,7 +52,7 @@ $.onReceive((messageType, arg, sender) => {
 
                 $.state.playerManagerPairs = pairs;
 
-                commItem.send("init", { player: player, gameManagerId: gameManagerId });
+                commItem.send("init", { player: player, gameManagerId: gameManagerId ,debugLoggerId : debugLoggerId});
             }
         }
     }
@@ -100,4 +102,10 @@ function CheckActivePairs() {
     }
 
     $.state.playerManagerPairs = pairs;
+}
+
+function SendToLogger(text) {
+    if (debugLoggerId) {
+        debugLoggerId.send("Log", { text: text });
+    }
 }
