@@ -2,14 +2,46 @@ const MaxHp = 100;
 let hp = MaxHp;
 let managerId = _.sourceItemId;
 let gameManagerId = null;
+let myTeammateIds = [];
 
 _.onReceive((messageType, arg, sender) => {
     if (messageType === "InitPlayerScript") {
-        _.log("Player_p: InitPlayerScriptを受信　初期化完了 sender:" +sender);
         gameManagerId = arg.gameManagerId;
+        let teammatesStr = arg.teammates ?? ""; 
+        if (teammatesStr !== "") {
+            //届いたカンマ区切りの文字列を、再び配列に分解して保存する
+            myTeammateIds = teammatesStr.split(",");
+        } else {
+            myTeammateIds = []; // 個人戦なら空配列
+        }
     }
     if (messageType === "damage") {
-        _.log("Player_p: 弾が当たってdamageメッセージを受信しました ダメージ値:" +arg.value);
+
+        let attackerIdStr = arg.attackerIdStr; 
+        if (!attackerIdStr) return;
+
+        let isTeammate = false;
+
+        // 🛑【確認用ログ】
+        _.log("ーー味方撃ち判定（修正版）ーー");
+        _.log("撃ってきた人のID(小文字): " + attackerIdStr);
+        _.log("保存されている味方リスト: " + JSON.stringify(myTeammateIds));
+
+        for (let i = 0; i < myTeammateIds.length; i++) {
+            if (myTeammateIds[i] === attackerIdStr) {
+                isTeammate = true;
+                break;
+            }
+        }
+
+        if (isTeammate) {
+            _.log("【味方ガード発動】味方へのダメージを無効化しました");
+            return; //弾く
+        } else{
+            _.log("味方判定に漏れたためダメージを与えました");
+        }
+
+
         hp -= arg.value;
         _.sendTo(arg.attacker, "HitPlayerHp", hp);
         if (hp <= 0) {
@@ -20,8 +52,6 @@ _.onReceive((messageType, arg, sender) => {
         }
         if (managerId) {
             try { _.sendTo(managerId, "Damaged", hp); } catch (e) {}
-        }else {
-                 _.log("Player_p: GameManagerがnullです");
         }
     }
 
@@ -36,7 +66,6 @@ _.onReceive((messageType, arg, sender) => {
         if (arg <= 0) {
             if (gameManagerId) {
                 try {
-                    _.log("Player_p: GameManagerへ送信します。送信値:" +hp);
                     _.sendTo(gameManagerId, "AddKillReport", null);
                 } catch (e) {
                     _.log("GameManagerへの送信エラー: " + e);

@@ -45,14 +45,14 @@ $.onReceive((messageType, arg, sender) => {
 
     if (messageType === "RequestStartCheck") {
         if ($.state.isMatchOngoing) return;
-        CheckAllPlayersReady(true);
+        CheckAllPlayersReady(true,arg.mode);
     }
 });
 
 /**
  * 全員が準備完了したかチェックし、リスト表示を更新する関数
  */
-function CheckAllPlayersReady(forceStart = false) {
+function CheckAllPlayersReady(forceStart = false,mode) {
     if ($.state.isMatchOngoing) return;
 
     let allPlayers = $.getPlayersNear($.getPosition(), Infinity);
@@ -100,7 +100,7 @@ function CheckAllPlayersReady(forceStart = false) {
         if ($.subNode("NotReadyListText")) $.subNode("NotReadyListText").setText("ーー試合中ーー");
 
         if (gameManagerId) {
-            gameManagerId.send("startMatch", null);
+            gameManagerId.send("startMatch", { mode: mode });
         }
     }
 }

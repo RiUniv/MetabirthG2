@@ -16,6 +16,7 @@ $.onReceive((messageType, arg, sender) => {
         $.state.targetPlayer = targetPlayer;
         $.state.debugLoggerId = arg.debugLoggerId;
         $.state.gameManagerId = arg.gameManagerId;
+        $.state.myTeammates = arg.teammates ?? []; //味方のリスト
         $.state.spawnerId = arg.spawnerId;
         $.state.isMatchActive = true; // 試合中状態にする
         $.state.checkTimer = 0;
@@ -27,21 +28,33 @@ $.onReceive((messageType, arg, sender) => {
     if (messageType === "ReStartMatch") {
         $.state.isMatchActive = true;
         $.state.gameManagerId = arg.gameManagerId;
+        
+        $.state.myTeammates = arg.teammates ?? ""; 
         $.state.checkTimer = 0;
         
-        /////　デバッグ用
+        const spawnerId = $.state.spawnerId;
+        const targetPlayer = $.state.targetPlayer;
+
+        // デバッグ用
         let currentOwner = $.getOwner();
         let ownerName = currentOwner ? currentOwner.userDisplayName : "★null";
         SendToLogger(`[${ownerName}のマネージャー] リスタートするためActivateします`);
-        /////
-        // プレイヤーのHP表記を100（初期値）にリセットしてUIを更新
+
+        // HPのリセット
         $.setStateCompat("owner", "playerhp", 100);
-        
-        // PlayerScript側に2試合目が始まったと通知してHPをリセットさせる
-        const targetPlayer = $.state.targetPlayer;
+        $.setStateCompat("owner", "playerKills", 0);
+
         if (targetPlayer && targetPlayer.exists() && arg.gameManagerId) {
             targetPlayer.send("InitPlayerScript", {
-                gameManagerId: arg.gameManagerId
+                gameManagerId: arg.gameManagerId,
+                teammates: $.state.myTeammates 
+            });
+        }
+
+        if (spawnerId && targetPlayer && targetPlayer.exists()) {
+            spawnerId.send("ManagerReady", { 
+                userId: String(targetPlayer.userId),
+                userName: targetPlayer.userDisplayName 
             });
         }
     }
@@ -95,18 +108,23 @@ function CheckAndApplyScript() {
     const targetPlayer = $.state.targetPlayer;
     const gManagerId = $.state.gameManagerId;
     const spawnerId = $.state.spawnerId;
+    const teamId = $.state.currentTeamId ?? 0;
 
     if (!targetPlayer || !targetPlayer.exists()) return;
 
     let currentOwner = $.getOwner();
+    
+    //オーナーが確定するまでここで引き返す
     if (!currentOwner || currentOwner.userId !== targetPlayer.userId) {
         $.requestOwner(targetPlayer);
         SendToLogger(`${targetPlayer.userDisplayName} にownerリクエストを送信`);
         return; 
     }
 
-    /////ここからsetPlayerScriptが確定した状態/////
+    /////ここからownerが確定した状態/////
     $.setPlayerScript(targetPlayer);
+
+    /////ここからsetPlayerScriptが確定した状態/////
     $.state.isScriptInitialized = true; // 確定ロック
         
     SendToLogger(`${targetPlayer.userDisplayName} にPlayerScript適用`);
@@ -116,9 +134,11 @@ function CheckAndApplyScript() {
         spawnerId.send("ManagerReady", { userId: targetPlayer.userId, userName: targetPlayer.userDisplayName });
     }
 
+    /////PlayerScript側に向けて初期化通知を送る/////
     if (gManagerId) {
         targetPlayer.send("InitPlayerScript", {
-            gameManagerId: gManagerId
+            gameManagerId: gManagerId,
+            teammates: $.state.myTeammates ?? []
         });
     }
 }

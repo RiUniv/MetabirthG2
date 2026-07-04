@@ -99,7 +99,11 @@ function Shoot(){
 
     if (handle.type == "player") {
         $.sendSignalCompat("this", "Hit");
-        handle.send("damage", { value: Damage, attacker: $.getOwner() });
+        handle.send("damage", { 
+            value: Damage, 
+            attacker: $.getOwner(),
+            attackerIdStr: "" + $.getOwner().userId 
+        });
     }
 
     if (bullets <= 0) StartReload();

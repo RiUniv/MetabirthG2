@@ -14,27 +14,23 @@ $.onReceive((messageType, arg, sender) => {
 
     // GameManagerから「マッチスタート」の合図が来たら、全員分を自動生成
     if (messageType === "StartMatch") {
-
-        let matchPlayers = arg.matchPlayers ?? {}; //参加者のリスト
-        let debugNames = [];
+        let matchPlayerIds = arg.matchPlayerIds ?? []; 
         let queue = [];
-        let pairs = $.state.playerManagerPairs ?? {}; // 既存の全マネージャーのストック
 
-        //送られてきたプレイヤーをマネージャー生成待機キューに追加ループ
-        for (let id in matchPlayers) {
-            let player = matchPlayers[id];
-            if (player && player.exists()) {
-                debugNames.push(`・${player.userDisplayName}`);
-                queue.push(player); // キューにプレイヤーオブジェクトを追加
+        // 💡届いたPlayerIdの配列を元に、この端末の近くにいる本物のPlayerHandleを掴み直す！
+        let allNearbyPlayers = $.getPlayersNear($.getPosition(), Infinity);
+
+        matchPlayerIds.forEach(pId => {
+            // 近くにいる人の中から、IDが一致する人を1人ずつ見つけ出す
+            let foundPlayer = allNearbyPlayers.find(p => String(p.userId) === String(pId));
+            if (foundPlayer && foundPlayer.exists()) {
+                queue.push(foundPlayer); // 💡本物のPlayerオブジェクトをキューに入れる
             }
-        }
+        });
 
-        if ($.subNode("Text")) {
-            $.subNode("Text").setText(`【生成対象】\n${debugNames.join("\n")}`);
-        }
-
+        $.state.currentTeammateLists = arg.teammateLists ?? [];
         $.state.spawnQueue = queue;
-        $.state.waitingPlayerId = null
+        $.state.waitingPlayerId = null; 
     }
 
     // GameManagerから「マッチ終了（リセット）」の合図が来たら、全員のマネージャーを消去
@@ -117,11 +113,30 @@ function SpawnPrivateManager(){
 
     let pairs = $.state.playerManagerPairs ?? {};
 
+
+    //配列の中から、今回のプレイヤーの playerId と一致するデータを探し出す
+    let lists = $.state.currentTeammateLists ?? [];
+    let myTeammatesStr = "";
+
+    let targetPlayerIdStr = "" + player.userId;
+
+    for (let i = 0; i < lists.length; i++) {
+        // lists[i].playerId (PlayerId型) を文字列化して比較
+        if (String(lists[i].playerId) === String(player.userId)) {
+            myTeammatesStr = lists[i].teammates;
+            break;
+        }
+    }
+
     //すでにマネージャーが生成済みなら再利用
     if(pairs[player.userId] && pairs[player.userId].managerHandle.exists()){
-        queue.shift();
-        $.state.spawnQueue = queue;
-        pairs[player.userId].managerHandle.send("ReStartMatch", { gameManagerId: gameManagerId });
+
+        $.state.waitingPlayerId = player.userId;
+        pairs[player.userId].managerHandle.send("ReStartMatch", { 
+            gameManagerId: gameManagerId,
+            spawnerId: $.itemHandle,
+            teammates: myTeammatesStr
+        });
         return;
     }
     
@@ -144,6 +159,7 @@ function SpawnPrivateManager(){
         player: player, 
         gameManagerId: gameManagerId, 
         debugLoggerId: debugLoggerId,
+        teammates: myTeammatesStr,
         spawnerId: $.itemHandle //相手がこちらへ送り返せるようにこれのIDを渡す
     });
 
