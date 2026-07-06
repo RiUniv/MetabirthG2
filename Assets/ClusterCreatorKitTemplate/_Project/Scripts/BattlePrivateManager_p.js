@@ -4,9 +4,14 @@ let managerId = _.sourceItemId;
 let gameManagerId = null;
 let myTeammateIds = [];
 
+const InvincibleDuration = 2.0;  // 無敵時間
+let isInvincible = false;        // 無敵中かどうかのフラグ
+let invincibleTimer = 0;         // 無敵時間を計るタイマー
+
 _.onReceive((messageType, arg, sender) => {
     if (messageType === "InitPlayerScript") {
         gameManagerId = arg.gameManagerId;
+        hp = MaxHp;
         let teammatesStr = arg.teammates ?? ""; 
         if (teammatesStr !== "") {
             //届いたカンマ区切りの文字列を、再び配列に分解して保存する
@@ -16,6 +21,10 @@ _.onReceive((messageType, arg, sender) => {
         }
     }
     if (messageType === "damage") {
+
+        if (isInvincible) {
+            return; 
+        }
 
         let attackerIdStr = arg.attackerIdStr; 
         if (!attackerIdStr) return;
@@ -59,6 +68,9 @@ _.onReceive((messageType, arg, sender) => {
         // 自分の位置と回転を、受け取ったステージ内のリスポーン地点に上書き
         _.setPosition(arg.position);
         _.setRotation(arg.rotation);
+
+        isInvincible = true;
+        invincibleTimer = 0;
     }
     
     // 攻撃を与えた人のhp情報を受け取る
@@ -77,4 +89,18 @@ _.onReceive((messageType, arg, sender) => {
         _.sendTo(managerId, "UpdateKillsUI", arg);
     }
 
+});
+
+_.onUpdate((deltaTime) => {
+    // 無敵中じゃない時は何もしない
+    if (!isInvincible) return;
+
+    // 無敵タイマーを deltaTime で進める
+    invincibleTimer += deltaTime;
+
+    // 設定した無敵時間（3.0秒）が経過したら
+    if (invincibleTimer >= InvincibleDuration) {
+        isInvincible = false; // 無敵解除！
+        invincibleTimer = 0;
+    }
 });

@@ -9,14 +9,19 @@ const spawnerId = $.worldItemReference("Spawner");
 
 const lobbyPointId = $.worldItemReference("LobbySpawnPoint");   // ロビーの戻り先
 const stagePoints = [
-    $.worldItemReference("StagePoint_1"), // ステージ内の復活地点1
-    $.worldItemReference("StagePoint_2"), // ステージ内の復活地点2
-    $.worldItemReference("StagePoint_3")  // ステージ内の復活地点3
+    $.worldItemReference("StagePoint_1"), // ステージ内の復活地点
+    $.worldItemReference("StagePoint_2"), 
+    $.worldItemReference("StagePoint_3"),
+    $.worldItemReference("StagePoint_4"), 
+    $.worldItemReference("StagePoint_5"), 
+    $.worldItemReference("StagePoint_6"), 
+    $.worldItemReference("StagePoint_7"), 
+    $.worldItemReference("StagePoint_8"), 
+    $.worldItemReference("StagePoint_9"),  
+    $.worldItemReference("StagePoint_10"),  
 ];
 const redSpawnPointId = $.worldItemReference("StagePoint_Red");
 const blueSpawnPointId = $.worldItemReference("StagePoint_Blue");
-
-const TargetKills = 3;
 
 $.onStart(() => {
     //辞書
@@ -89,14 +94,14 @@ $.onReceive((messageType, arg, sender) => {
             UpdateRankings(); // チーム戦表示で更新
 
             // チームの合計キルが目標に達したら試合終了
-            if (tKills[myTeam] >= TargetKills) {
+            if (tKills[myTeam] >= $.state.targetKills) {
                 EndMatch();
                 return;
             }
         } else {
             // 個人戦の場合
             UpdateRankings();
-            if (latestKills >= 3) { // 個人戦は3キル決着
+            if (latestKills >= $.state.targetKills) {
                 EndMatch();
                 return;
             }
@@ -123,7 +128,11 @@ $.onReceive((messageType, arg, sender) => {
     //全員が準備完了して試合開始ボタンが押された合図
     if (messageType === "startMatch") {
         let mode = (arg && arg.mode) ? arg.mode : "FFA";
+        let limit = (arg && arg.killLimit) ? arg.killLimit : 3;
+
         $.state.matchMode = mode;
+        $.state.targetKills = limit;
+
         PrepareMatch();
     }
 
@@ -145,11 +154,12 @@ $.onReceive((messageType, arg, sender) => {
  */
 function UpdateRankings() {
     let mode = $.state.matchMode;
-    
+    let target = $.state.targetKills ?? 3;
+
     if (mode === "TEAM") {
         let tKills = $.state.teamKills ?? { 1: 0, 2: 0 };
-        ranks[0].setText(`🔴 赤チーム: ${tKills[1]} / ${TargetKills} Kills`);
-        ranks[1].setText(`🔵 青チーム: ${tKills[2]} / ${TargetKills} Kills`);
+        ranks[0].setText(`🔴 赤チーム: ${tKills[1]} / ${target} Kills`);
+        ranks[1].setText(`🔵 青チーム: ${tKills[2]} / ${target} Kills`);
         ranks[2].setText(`--------------------`);
         return;
     }
