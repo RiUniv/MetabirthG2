@@ -81,8 +81,12 @@ $.onReceive((messageType, arg, sender) => {
         SendToLogger(`現在の内部オーナー: ${ownerText}`);
         SendToLogger(`[${ownerText}のマネージャー] Sleep処理を行います`);
         /////
-        // 画面のUIなどを非表示にする、あるいはリセットする
+
         $.setStateCompat("owner", "playerhp", 0);
+
+        if (targetPlayer && targetPlayer.exists()) {
+            targetPlayer.send("EndMatch", null);
+        }
     }
     if (messageType === "DestroyYourself") {
         $.destroy(); // ログアウト時のみ完全に消滅

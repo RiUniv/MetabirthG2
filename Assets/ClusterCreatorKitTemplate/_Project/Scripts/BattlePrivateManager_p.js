@@ -3,6 +3,7 @@ let hp = MaxHp;
 let managerId = _.sourceItemId;
 let gameManagerId = null;
 let myTeammateIds = [];
+let isMatchActive = false;
 
 const InvincibleDuration = 2.0;  // 無敵時間
 let isInvincible = false;        // 無敵中かどうかのフラグ
@@ -12,6 +13,10 @@ _.onReceive((messageType, arg, sender) => {
     if (messageType === "InitPlayerScript") {
         gameManagerId = arg.gameManagerId;
         hp = MaxHp;
+        
+        isInvincible = false;
+        invincibleTimer = 0;
+
         let teammatesStr = arg.teammates ?? ""; 
         if (teammatesStr !== "") {
             //届いたカンマ区切りの文字列を、再び配列に分解して保存する
@@ -19,10 +24,17 @@ _.onReceive((messageType, arg, sender) => {
         } else {
             myTeammateIds = []; // 個人戦なら空配列
         }
+        isMatchActive = true;
     }
+
+    if (messageType === "EndMatch") {
+        hp = MaxHp;
+        isMatchActive = false;
+    }
+
     if (messageType === "damage") {
 
-        if (isInvincible) {
+        if (isInvincible || !isMatchActive) {
             return; 
         }
 
@@ -91,7 +103,7 @@ _.onReceive((messageType, arg, sender) => {
 
 });
 
-_.onUpdate((deltaTime) => {
+_.onFrame((deltaTime) => {
     // 無敵中じゃない時は何もしない
     if (!isInvincible) return;
 
