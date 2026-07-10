@@ -4,6 +4,10 @@ const ranks = [
     $.subNode("Rank_3")
 ];
 
+const resultDisplay = $.subNode("Result_Display");
+const redTeamDisplay = $.subNode("Red_Team_Display");
+const blueTeamDisplay = $.subNode("Blue_Team_Display");
+
 const MatchReadyManagerId = $.worldItemReference("MatchReadyManager");
 const spawnerId = $.worldItemReference("Spawner");
 
@@ -24,6 +28,12 @@ const redSpawnPointId = $.worldItemReference("StagePoint_Red");
 const blueSpawnPointId = $.worldItemReference("StagePoint_Blue");
 
 $.onStart(() => {
+    $.state.nextSpawnIndex = 0;
+
+    if (resultDisplay) resultDisplay.setText("");
+    if (redTeamDisplay) redTeamDisplay.setText("");
+    if (blueTeamDisplay) blueTeamDisplay.setText("");
+
     //辞書
     $.state.leaderboard = {};
     $.state.matchPlayers = {};
@@ -95,14 +105,15 @@ $.onReceive((messageType, arg, sender) => {
 
             // チームの合計キルが目標に達したら試合終了
             if (tKills[myTeam] >= $.state.targetKills) {
-                EndMatch();
+                let winnerTeamName = (myTeam === 1) ? "TEAM RED" : "TEAM BLUE";
+                EndMatch(winnerTeamName);
                 return;
             }
         } else {
             // 個人戦の場合
             UpdateRankings();
             if (latestKills >= $.state.targetKills) {
-                EndMatch();
+                EndMatch(pName);
                 return;
             }
         }
@@ -158,8 +169,8 @@ function UpdateRankings() {
 
     if (mode === "TEAM") {
         let tKills = $.state.teamKills ?? { 1: 0, 2: 0 };
-        ranks[0].setText(`🔴 赤チーム: ${tKills[1]} / ${target} Kills`);
-        ranks[1].setText(`🔵 青チーム: ${tKills[2]} / ${target} Kills`);
+        ranks[0].setText(`🔴 TEAM RED: ${tKills[1]} / ${target} Kills`);
+        ranks[1].setText(`🔵 TEAM BLUE: ${tKills[2]} / ${target} Kills`);
         ranks[2].setText(`--------------------`);
         return;
     }
@@ -206,10 +217,17 @@ function GetTeamRespawnPoint(userId) {
             validPoints.push(cached[key]);
         }
     }
+
     if (validPoints.length > 0) {
-        let chosen = validPoints[Math.floor(Math.random() * validPoints.length)];
+        let currentIndex = $.state.nextSpawnIndex ?? 0;
+        if (currentIndex >= validPoints.length) {
+            currentIndex = 0;
+        }
+        let chosen = validPoints[currentIndex];
         pos = chosen.position;
         rot = chosen.rotation;
+
+        $.state.nextSpawnIndex = (currentIndex + 1) % validPoints.length;
     }
     return { position: pos, rotation: rot };
 }
@@ -219,7 +237,17 @@ function PrepareMatch() {
     $.state.leaderboard = {};
     $.state.playerTeams = {};
     $.state.teamKills = { 1: 0, 2: 0 };
+    if (resultDisplay) resultDisplay.setText("");
+    if (mode === "TEAM") {
+        if (redTeamDisplay) redTeamDisplay.setText("TEAM RED");
+        if (blueTeamDisplay) blueTeamDisplay.setText("TEAM BLUE");
+    } else {
+        if (redTeamDisplay) redTeamDisplay.setText("");
+        if (blueTeamDisplay) blueTeamDisplay.setText("");
+    }
+    
     UpdateRankings();
+    
 
     let allPlayers = $.getPlayersNear($.getPosition(), Infinity);
     
@@ -247,7 +275,7 @@ function PrepareMatch() {
             playerListForShuffle[r] = tmp;
         }
 
-        // 💡【最重要修正】PlayerId型ではなく、最初から「ただのテキスト(String)」の配列にする！
+        //PlayerId型ではなく、最初からただのテキストの配列にする
         let redTeamText = [];  
         let blueTeamText = []; 
         let teams = {};
@@ -255,14 +283,6 @@ function PrepareMatch() {
         for (let i = 0; i < playerListForShuffle.length; i++) {
             let p = playerListForShuffle[i];
             
-            // 💡【核心】p.userId のままだとオブジェクト型なので、
-            // String() の中に player.userDisplayName や p.userId.toString() のような
-            // clusterが文字列として出力する安全なテキスト（または player.userId のシリアライズ）を
-            // 抽出するため、最も確実な「 player.userId をそのままオブジェクトキーとしてJavaScriptの暗黙の型変換にかける、またはプロパティの安全なテキスト化」として、
-            // 確実な方法をとります。
-            // 💡実は cluster の .userId を文字列として一番確実に引っこ抜くのは、
-            // 空文字と足し算する、あるいは `String(p.userId)` ですが、join時のバグを避けるため、
-            // ここで完全に「ただのプレインテキスト」に変換して配列に入れます。
             let pureUserIdText = "" + p.userId; 
 
             if (i % 2 === 0) {
@@ -278,12 +298,11 @@ function PrepareMatch() {
         for (let i = 0; i < playerListForShuffle.length; i++) {
             let p = playerListForShuffle[i];
             
-            // 💡ただのテキスト配列同士なので、何人いようが絶対に安全な1本の文字列に .join できます！
             let listText = (teams[p.userId] === 1) ? redTeamText : blueTeamText;
             
             teammateListsArray.push({
                 playerId: "" + p.userId,      
-                teammates: listText.join(",") // 💡これでもう絶対に invalid value にはなりません！
+                teammates: listText.join(",")
             });
         }
     } else {
@@ -316,7 +335,7 @@ function StartMatch() {
     }
 }
 
-function EndMatch() {
+function EndMatch(winnerName) {
     if (spawnerId) {
         spawnerId.send("EndMatch", null);
     }
@@ -325,6 +344,12 @@ function EndMatch() {
         MatchReadyManagerId.send("ResetReadyStatus", null);
     }
 
+    if (resultDisplay && winnerName) {
+        resultDisplay.setText(`WINNER \n【 ${winnerName} 】`);
+    }
+    if (redTeamDisplay) redTeamDisplay.setText("");
+    if (blueTeamDisplay) blueTeamDisplay.setText("");
+    
     let matchPlayers = $.state.matchPlayers ?? {};
     let cached = $.state.cachedStagePositions ?? {};
 
