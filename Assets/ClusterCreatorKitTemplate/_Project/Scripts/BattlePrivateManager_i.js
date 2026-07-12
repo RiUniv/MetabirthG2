@@ -83,6 +83,7 @@ $.onReceive((messageType, arg, sender) => {
         /////
 
         $.setStateCompat("owner", "playerhp", 0);
+        $.setStateCompat("owner", "playerKills", 0);
 
         if (targetPlayer && targetPlayer.exists()) {
             targetPlayer.send("EndMatch", null);
