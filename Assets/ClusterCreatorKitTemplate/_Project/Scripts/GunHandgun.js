@@ -133,18 +133,42 @@ function Shoot(player) {
 
     // 3本のレイの結果を順番にチェックして、最初にプレイヤーに当たったものを採用する
     let finalHitHandle = null;
+    let isHitToPlayer = false;
 
-    //ド真ん中のメインラインを確認
-    if (rayCenter != null && rayCenter.handle != null && rayCenter.handle.type == "player") {
-        finalHitHandle = rayCenter.handle;
+    // 真ん中のラインのチェック
+    if (rayCenter != null && rayCenter.hit) {
+        hitPosition = rayCenter.hit.point; // 壁でも床でもプレイヤーでも、ぶつかった3D座標を取得
+        if (rayCenter.handle != null && rayCenter.handle.type == "player") {
+            finalHitHandle = rayCenter.handle;
+            isHitToPlayer = true;
+        }
     }
-    //真ん中が外れていたら、右側のラインを確認
-    else if (rayRight != null && rayRight.handle != null && rayRight.handle.type == "player") {
-        finalHitHandle = rayRight.handle;
+    // 右側のラインのチェック（真ん中が何にも当たっていなかった場合）
+    else if (rayRight != null && rayRight.hit) {
+        hitPosition = rayRight.hit.point;
+        if (rayRight.handle != null && rayRight.handle.type == "player") {
+            finalHitHandle = rayRight.handle;
+            isHitToPlayer = true;
+        }
     }
-    //右側も外れていたら、左側のラインを確認
-    else if (rayLeft != null && rayLeft.handle != null && rayLeft.handle.type == "player") {
-        finalHitHandle = rayLeft.handle;
+    // 左側のラインのチェック
+    else if (rayLeft != null && rayLeft.hit) {
+        hitPosition = rayLeft.hit.point;
+        if (rayLeft.handle != null && rayLeft.handle.type == "player") {
+            finalHitHandle = rayLeft.handle;
+            isHitToPlayer = true;
+        }
+    }
+
+    if(hitPosition != null){
+        if(isHitToPlayer){
+            const HitEffect_player = new WorldItemTemplateId("HitEffect_player"); 
+            $.createItem(HitEffect_player, hitPosition, rotation);
+        } else{
+            const HitEffect_object = new WorldItemTemplateId("HitEffect_object"); 
+            $.createItem(HitEffect_object, hitPosition, rotation);
+        }
+
     }
 
     //3本のどこか1つでもプレイヤーを捕らえていたらダメージ処理を発動

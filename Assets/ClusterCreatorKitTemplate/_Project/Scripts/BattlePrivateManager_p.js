@@ -16,6 +16,7 @@ _.onReceive((messageType, arg, sender) => {
     if (messageType === "InitPlayerScript") {
         gameManagerId = arg.gameManagerId;
         hp = MaxHp;
+        isMatchActive = false;
         
         isInvincible = false;
         invincibleTimer = 0;
@@ -27,7 +28,18 @@ _.onReceive((messageType, arg, sender) => {
         } else {
             myTeammateIds = []; // 個人戦なら空配列
         }
-        isMatchActive = true;
+    }
+
+    if (messageType === "MatchActualStart") {
+        isMatchActive = true; 
+        _.log("【試合開始】ダメージ判定がアクティブになりました！");
+    }
+
+    //勝者が決まった瞬間にGameManagerから届くロック命令
+    if (messageType === "MatchOverLock") {
+        isMatchActive = false; // 再びダメージと攻撃を完全シャットアウト
+        isInvincible = true;   // 5秒間完全無敵
+        _.log("【試合終了】演出時間のため無敵化ロックされました");
     }
 
     if (messageType === "EndMatch") {
