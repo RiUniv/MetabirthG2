@@ -6,8 +6,11 @@ let myTeammateIds = [];
 let isMatchActive = false;
 
 const InvincibleDuration = 2.0;  // 無敵時間
+
 let isInvincible = false;        // 無敵中かどうかのフラグ
 let invincibleTimer = 0;         // 無敵時間を計るタイマー
+let SpeedupTimer = 0;           // スピードアップ用のタイマー
+let JumpupTimer = 0;           // ジャンプアップ用のタイマー
 
 _.onReceive((messageType, arg, sender) => {
     if (messageType === "InitPlayerScript") {
@@ -28,7 +31,7 @@ _.onReceive((messageType, arg, sender) => {
     }
 
     if (messageType === "EndMatch") {
-        hp = MaxHp;
+        ResetPlayerStatus();
         isMatchActive = false;
     }
 
@@ -42,11 +45,6 @@ _.onReceive((messageType, arg, sender) => {
         if (!attackerIdStr) return;
 
         let isTeammate = false;
-
-        // 🛑【確認用ログ】
-        _.log("ーー味方撃ち判定（修正版）ーー");
-        _.log("撃ってきた人のID(小文字): " + attackerIdStr);
-        _.log("保存されている味方リスト: " + JSON.stringify(myTeammateIds));
 
         for (let i = 0; i < myTeammateIds.length; i++) {
             if (myTeammateIds[i] === attackerIdStr) {
@@ -76,13 +74,39 @@ _.onReceive((messageType, arg, sender) => {
         }
     }
 
+    if (messageType === "heal") {
+        if (!isMatchActive) return; // 試合中以外は無視
+
+        hp += arg.value;
+        if (hp > MaxHp) hp = MaxHp; // 上限キャップ
+
+        _.log("回復しました 現在HP: " + hp);
+
+        // UIを更新するためマネージャーへ通知
+        if (managerId) {
+            try { _.sendTo(managerId, "Healed", hp); } catch (e) {}
+        }
+    }
+
+    if (messageType === "speedup") {
+        if (!isMatchActive) return; // 試合中以外は無視
+
+        SpeedupTimer = arg.SpeedupTimer;
+        _.setMoveSpeedRate(arg.SpeedRate);
+    }
+
+    if (messageType === "jumpup") {
+        if (!isMatchActive) return; // 試合中以外は無視
+
+        JumpupTimer = arg.JumpupTimer;
+        _.setJumpSpeedRate(arg.JumpRate);
+    }
+
     if (messageType === "TeleportToRespawn") {
         // 自分の位置と回転を、受け取ったステージ内のリスポーン地点に上書き
         _.setPosition(arg.position);
         _.setRotation(arg.rotation);
-
-        isInvincible = true;
-        invincibleTimer = 0;
+        ResetPlayerStatus();
     }
     
     // 攻撃を与えた人のhp情報を受け取る
@@ -104,15 +128,46 @@ _.onReceive((messageType, arg, sender) => {
 });
 
 _.onFrame((deltaTime) => {
+    CountInvincibleTime(deltaTime);
+    CountSpeedupTimer(deltaTime);
+    CountJumpupTimer(deltaTime);
+});
+
+function CountInvincibleTime(t){
     // 無敵中じゃない時は何もしない
     if (!isInvincible) return;
 
-    // 無敵タイマーを deltaTime で進める
-    invincibleTimer += deltaTime;
+    // 無敵タイマーを進める
+    invincibleTimer += t;
 
-    // 設定した無敵時間（3.0秒）が経過したら
+    // 設定した無敵時間が経過したら
     if (invincibleTimer >= InvincibleDuration) {
-        isInvincible = false; // 無敵解除！
+        isInvincible = false; // 無敵解除
         invincibleTimer = 0;
     }
-});
+}
+
+function CountSpeedupTimer(t){
+    if(SpeedupTimer <= 0) return;
+    SpeedupTimer -= t;
+    if(SpeedupTimer <= 0){
+        _.setMoveSpeedRate(1.0);
+        SpeedupTimer = 0;
+    }
+}
+
+function CountJumpupTimer(t){
+    if(JumpupTimer <= 0) return;
+    JumpupTimer -= t;
+    if(JumpupTimer <= 0){
+        _.setJumpSpeedRate(1.0);
+        JumpupTimer = 0;
+    }
+}
+
+function ResetPlayerStatus(){
+     _.resetPlayerEffects()
+    SpeedupTimer = 0;
+    JumpupTimer = 0;
+    hp = MaxHp;   
+}

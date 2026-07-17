@@ -4,7 +4,8 @@ const FireRate = 0.8;      //射撃間隔（秒）
 const Damage = 48;          
 const MaxBullets = 8;      
 const ReloadTime = 1.8;     
-const MaxDistance = 30;     
+const MaxDistance = 30;
+const BulletRadius = 0.1;
 // ==========================================
 
 $.onStart(() => {
@@ -104,26 +105,59 @@ function TryShoot(player) {
 function Shoot(player) {
     let bullets = $.state.Bullets;
     let position = $.getPosition();
-    let direction = new Vector3(0, 0, 1).applyQuaternion($.getRotation());
-    let raycastResult = $.raycast(position, direction, MaxDistance);
+    let rotation = $.getRotation();
+    
+    //プレイヤーの向いている正面ベクトル
+    let direction = new Vector3(0, 0, 1).applyQuaternion(rotation);
 
+    let rightDirection = new Vector3(1, 0, 0).applyQuaternion(rotation);
+
+    //スライドさせる距離を計算
+    let offsetVector = rightDirection.multiplyScalar(BulletRadius);
+
+    //飛ばす3本のスタート地点を計算
+    let posCenter = position;                            // 基準（真ん中）
+    let posRight  = position.clone().add(offsetVector);  // 右にずらした地点
+    let posLeft   = position.clone().sub(offsetVector);  // 左にずらした地点
+
+    // 3本のレイキャストを一斉に発射
+    let rayCenter = $.raycast(posCenter, direction, MaxDistance);
+    let rayRight  = $.raycast(posRight, direction, MaxDistance);
+    let rayLeft   = $.raycast(posLeft, direction, MaxDistance);
+
+    // 残弾の減少と演出
     bullets--;
     $.state.Bullets = bullets;
     $.setStateCompat("owner", "RemainBullets", bullets);
     $.sendSignalCompat("this", "Shoot");
-  
-    if (raycastResult != null) {
-        let handle = raycastResult.handle;
-        if (handle != null && handle.type == "player") {
-            $.sendSignalCompat("this", "Hit");
-            
-            // 完璧になった味方ガード用データ
-            handle.send("damage", { 
-                value: Damage, 
-                attacker: player,
-                attackerIdStr: "" + player.userId 
-            });
-        }
+
+    // 3本のレイの結果を順番にチェックして、最初にプレイヤーに当たったものを採用する
+    let finalHitHandle = null;
+
+    //ド真ん中のメインラインを確認
+    if (rayCenter != null && rayCenter.handle != null && rayCenter.handle.type == "player") {
+        finalHitHandle = rayCenter.handle;
+    }
+    //真ん中が外れていたら、右側のラインを確認
+    else if (rayRight != null && rayRight.handle != null && rayRight.handle.type == "player") {
+        finalHitHandle = rayRight.handle;
+    }
+    //右側も外れていたら、左側のラインを確認
+    else if (rayLeft != null && rayLeft.handle != null && rayLeft.handle.type == "player") {
+        finalHitHandle = rayLeft.handle;
+    }
+
+    //3本のどこか1つでもプレイヤーを捕らえていたらダメージ処理を発動
+    if (finalHitHandle != null) {
+        $.sendSignalCompat("this", "Hit");
+        
+        //当てた人にメッセージを送る
+        //味方ガード用データ
+        finalHitHandle.send("damage", { 
+            value: Damage, 
+            attacker: player,
+            attackerIdStr: "" + player.userId 
+        });
     }
 
     if (bullets <= 0) {

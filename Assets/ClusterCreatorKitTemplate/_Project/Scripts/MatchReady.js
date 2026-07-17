@@ -1,16 +1,15 @@
-// swtichGame.js
 const gameManagerId = $.worldItemReference("GameManager");
+const pp = $.worldItemReference("PostProcess");
 
 $.onStart(() => {
     // 準備完了したプレイヤーの記録用辞書
     $.state.readyPlayers = {};
     
-    // 【追加】現在試合中かどうかを管理するフラグ（最初は試合前なのでfalse）
+    //現在試合中かどうかを管理するフラグ
     $.state.isMatchOngoing = false; 
 });
 
 $.onInteract((player) => {
-    // 💡【最重要】もしすでに試合中なら、触られても何もせずにここで処理を終了する！
     if ($.state.isMatchOngoing) {
         $.log("試合中のため、準備完了ボタンはロックされています");
         return;
@@ -43,16 +42,17 @@ $.onReceive((messageType, arg, sender) => {
         CheckAllPlayersReady();
     }
 
+    //from:MatchStartButton
     if (messageType === "RequestStartCheck") {
         if ($.state.isMatchOngoing) return;
-        CheckAllPlayersReady(true,arg.mode,arg.killLimit);
+        CheckAllPlayersReady(true,arg.mode,arg.killLimit,arg.timeLimit);
     }
 });
 
 /**
  * 全員が準備完了したかチェックし、リスト表示を更新する関数
  */
-function CheckAllPlayersReady(forceStart = false,mode,killLimit) {
+function CheckAllPlayersReady(forceStart = false,mode,killLimit,timeLimit) {
     if ($.state.isMatchOngoing) return;
 
     let allPlayers = $.getPlayersNear($.getPosition(), Infinity);
@@ -100,7 +100,8 @@ function CheckAllPlayersReady(forceStart = false,mode,killLimit) {
         if ($.subNode("NotReadyListText")) $.subNode("NotReadyListText").setText("ーー試合中ーー");
 
         if (gameManagerId) {
-            gameManagerId.send("startMatch", { mode: mode , killLimit: killLimit});
+            gameManagerId.send("startMatch", { mode: mode , killLimit: killLimit,timeLimit: timeLimit});
         }
+        pp.send("FadeIn", null);
     }
 }

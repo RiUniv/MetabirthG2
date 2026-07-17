@@ -62,13 +62,21 @@ $.onReceive((messageType, arg, sender) => {
     if (messageType === "Damaged") {
         $.log("manager_i:ダメージメッセージ受信 現在のhp:" + arg);
         if (!$.state.isMatchActive) return;
-        $.sendSignalCompat("owner", "Damaged");
+        $.sendSignalCompat("owner", "HP_Red");
         $.setStateCompat("owner", "playerhp", arg);
+        $.sendSignalCompat("owner", "Damaged");
+    }
+
+    if (messageType === "Healed") {
+        if (!$.state.isMatchActive) return;
+        $.sendSignalCompat("owner", "HP_Green");
+        $.setStateCompat("owner", "playerhp", arg); // HPゲージだけ更新
     }
 
     if (messageType === "UpdateKillsUI") {
         if (!$.state.isMatchActive) return;
         $.setStateCompat("owner", "playerKills", arg);
+        $.sendSignalCompat("owner","playerKillSignal");
     }
 
     //試合終了後のスリープ

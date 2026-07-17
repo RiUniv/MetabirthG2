@@ -7,8 +7,10 @@ const ranks = [
 const resultDisplay = $.subNode("Result_Display");
 const redTeamDisplay = $.subNode("Red_Team_Display");
 const blueTeamDisplay = $.subNode("Blue_Team_Display");
+const timerDisplay = $.subNode("Timer_Display");
 
 const MatchReadyManagerId = $.worldItemReference("MatchReadyManager");
+const pp = $.worldItemReference("PostProcess");
 const spawnerId = $.worldItemReference("Spawner");
 
 const lobbyPointId = $.worldItemReference("LobbySpawnPoint");   // ロビーの戻り先
@@ -28,12 +30,11 @@ const redSpawnPointId = $.worldItemReference("StagePoint_Red");
 const blueSpawnPointId = $.worldItemReference("StagePoint_Blue");
 
 $.onStart(() => {
-    $.state.nextSpawnIndex = 0;
-
     if (resultDisplay) resultDisplay.setText("");
     if (redTeamDisplay) redTeamDisplay.setText("");
     if (blueTeamDisplay) blueTeamDisplay.setText("");
 
+    $.state.isMatchActive = false;
     //辞書
     $.state.leaderboard = {};
     $.state.matchPlayers = {};
@@ -41,11 +42,10 @@ $.onStart(() => {
     $.state.playerTeams = {};//各プレイヤーのチーム(1=赤, 2=青)を保存する辞書
     $.state.matchMode = "FFA"
     $.state.teamKills = { 1: 0, 2: 0 };//$.state.teamKills = { 1: 0, 2: 0 };
+    $.state.nextSpawnIndex = 0;
+    $.state.timeLimit = 0;
 
 
-    if (lobbyPointId) {
-        lobbyPointId.send("RequestLocation", { pointIndex: "lobby" });
-    }
 
     for(let i = 0;i<stagePoints.length;i++){
         let pHandle = stagePoints[i];
@@ -54,7 +54,9 @@ $.onStart(() => {
             pHandle.send("RequestLocation", { pointIndex: i });
         }
     }
-
+    if (lobbyPointId) {
+        lobbyPointId.send("RequestLocation", { pointIndex: "lobby" });
+    }
     if (redSpawnPointId) redSpawnPointId.send("RequestLocation", { pointIndex: "red" });
     if (blueSpawnPointId) blueSpawnPointId.send("RequestLocation", { pointIndex: "blue" });
     
@@ -140,9 +142,13 @@ $.onReceive((messageType, arg, sender) => {
     if (messageType === "startMatch") {
         let mode = (arg && arg.mode) ? arg.mode : "FFA";
         let limit = (arg && arg.killLimit) ? arg.killLimit : 3;
+        let time = (arg && arg.timeLimit) ? arg.timeLimit : 0;
 
         $.state.matchMode = mode;
         $.state.targetKills = limit;
+        $.state.timeLimit = time;
+        $.state.remainingTime = time;
+        $.state.isMatchActive = false;
 
         PrepareMatch();
     }
@@ -150,6 +156,7 @@ $.onReceive((messageType, arg, sender) => {
     //PrivateManagerSpawnerから送られる
     //全員のPrivateManagerが正しくセットアップされた合図
     if (messageType === "ReadyToStartMatch") {
+        $.state.isMatchActive = true;
         StartMatch();
     }
 
@@ -169,8 +176,8 @@ function UpdateRankings() {
 
     if (mode === "TEAM") {
         let tKills = $.state.teamKills ?? { 1: 0, 2: 0 };
-        ranks[0].setText(`🔴 TEAM RED: ${tKills[1]} / ${target} Kills`);
-        ranks[1].setText(`🔵 TEAM BLUE: ${tKills[2]} / ${target} Kills`);
+        ranks[0].setText(`TEAM RED: ${tKills[1]} / ${target} Kills`);
+        ranks[1].setText(`TEAM BLUE: ${tKills[2]} / ${target} Kills`);
         ranks[2].setText(`--------------------`);
         return;
     }
@@ -230,6 +237,74 @@ function GetTeamRespawnPoint(userId) {
         $.state.nextSpawnIndex = (currentIndex + 1) % validPoints.length;
     }
     return { position: pos, rotation: rot };
+}
+
+$.onUpdate((deltaTime) => {
+    CountTimer(deltaTime);
+});
+
+function CountTimer(deltaTime){
+    if (!$.state.isMatchActive) return;
+
+    let timeLimit = $.state.timeLimit ?? 0;
+
+    if (timeLimit === 0) {
+        if (timerDisplay) timerDisplay.setText("⏱️ TIME: 無制限");
+        return; 
+    }
+
+    let remTime = $.state.remainingTime ?? 0;
+    remTime -= deltaTime;
+    
+    if (remTime < 0) {
+        remTime = 0;
+    }
+    $.state.remainingTime = remTime;
+
+    let minutes = Math.floor(remTime / 60);
+    let seconds = Math.floor(remTime % 60);
+    let secondsStr = (seconds < 10) ? "0" + seconds : "" + seconds;
+
+    if (timerDisplay) {
+        timerDisplay.setText(`⏱️ TIME: ${minutes}:${secondsStr}`);
+    }
+
+    if (remTime <= 0) {
+        $.state.isMatchActive = false;
+        if (timerDisplay) timerDisplay.setText("⏱️ TIME UP!");
+        
+        DetermineWinnerByScore();
+    }
+}
+
+function DetermineWinnerByScore() {
+    let mode = $.state.matchMode;
+    let winnerText = "";
+
+    if (mode === "TEAM") {
+        let tKills = $.state.teamKills ?? { 1: 0, 2: 0 };
+        if (tKills[1] > tKills[2]) {
+            winnerText = "TEAM RED";
+        } else if (tKills[2] > tKills[1]) {
+            winnerText = "TEAM BLUE";
+        } else {
+            winnerText = "DRAW";
+        }
+    } else {
+        let currentBoard = $.state.leaderboard ?? {};
+        let playersArray = [];
+        for (let key in currentBoard) {
+            playersArray.push(currentBoard[key]);
+        }
+        
+        if (playersArray.length > 0) {
+            playersArray.sort((a, b) => b.kills - a.kills);
+            winnerText = playersArray[0].name;
+        } else {
+            winnerText = "NO SCORE";
+        }
+    }
+    EndMatch(winnerText);
 }
 
 function PrepareMatch() {
@@ -333,9 +408,13 @@ function StartMatch() {
             player.setPosition(startPointData.position);
         }
     }
+    pp.send("FadeOut", null);
 }
 
 function EndMatch(winnerName) {
+    $.state.isMatchActive = false;
+    if (timerDisplay) timerDisplay.setText("");
+
     if (spawnerId) {
         spawnerId.send("EndMatch", null);
     }
@@ -347,9 +426,10 @@ function EndMatch(winnerName) {
     if (resultDisplay && winnerName) {
         resultDisplay.setText(`WINNER \n【 ${winnerName} 】`);
     }
+
     if (redTeamDisplay) redTeamDisplay.setText("");
     if (blueTeamDisplay) blueTeamDisplay.setText("");
-    
+
     let matchPlayers = $.state.matchPlayers ?? {};
     let cached = $.state.cachedStagePositions ?? {};
 
