@@ -66,6 +66,14 @@ $.onReceive((messageType, arg, sender) => {
         $.setStateCompat("owner", "playerhp", arg);
         $.sendSignalCompat("owner", "Damaged");
     }
+    
+    if(messageType === "Dead"){
+            let myPos = $.getOwner().getPosition();
+            myPos.y += 0.5;
+            let myRot = $.getOwner().getRotation();
+            const Effect = new WorldItemTemplateId("KillEffect"); 
+            $.createItem(Effect, myPos, myRot);        
+    }
 
     if (messageType === "Healed") {
         if (!$.state.isMatchActive) return;

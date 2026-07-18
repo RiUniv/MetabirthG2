@@ -76,8 +76,10 @@ _.onReceive((messageType, arg, sender) => {
         hp -= arg.value;
         _.sendTo(arg.attacker, "HitPlayerHp", hp);
         if (hp <= 0) {
-            if (gameManagerId) {
+            if (gameManagerId && managerId) {
+                _.sendTo(managerId, "Dead", null);
                 _.sendTo(gameManagerId, "RequestRespawnPoint", null);
+                
             }
             hp = MaxHp;
         }

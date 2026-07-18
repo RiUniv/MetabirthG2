@@ -5,7 +5,7 @@ const Damage = 48;
 const MaxBullets = 8;      
 const ReloadTime = 1.8;     
 const MaxDistance = 30;
-const BulletRadius = 0.1;
+const BulletRadius = 0.2;
 // ==========================================
 
 $.onStart(() => {

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 478153500964825439}
   - component: {fileID: 3731174512785317595}
   - component: {fileID: 8560822134934252808}
+  - component: {fileID: -7544466881350928787}
   m_Layer: 0
   m_Name: BattlePrivateManager
   m_TagString: Untagged
@@ -80,3 +81,21 @@ MonoBehaviour:
   sourceCodeAsset: {fileID: 5022602860645237092, guid: 449f79e3c85f980488dd499f74dc1604,
     type: 3}
   sourceCode: 
+--- !u!114 &-7544466881350928787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5505615672238524624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f60bfc9a2c4b04bcd3524b54a1e838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.WorldItemTemplateList
+  worldItemTemplates:
+  - id: KillEffect
+    worldItemTemplate: {fileID: 2516512763262053842, guid: 7a8f406c48ec00948b432fe00a3aecfc,
+      type: 3}
+    itemTemplateId:
+      value: 13184428555539643813

@@ -140,6 +140,7 @@ $.onReceive((messageType, arg, sender) => {
         // Spawnerのハンドシェイクが完了したら、即座に「開幕カウントダウン状態」へ移行
         $.state.currentState = "START_COUNT";
         $.state.generalTimer = 0; 
+        $.sendSignalCompat("this","GameStart");
         StartMatch(); // 全員をここでワープさせる
     }
 

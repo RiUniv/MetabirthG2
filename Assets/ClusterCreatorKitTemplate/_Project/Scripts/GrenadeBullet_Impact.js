@@ -1,9 +1,9 @@
 // GrenadeBullet.js（弾側）
 
 const ExplodeTime = 2.5; //撃ち出されてから爆発するまでの時間
-const DestroyTime = 5;
-const ExplodeRadius = 4; //爆風が届く半径
-const MaxDamage = 120;    //爆心の最大ダメージ
+const DestroyTime = 4;
+const ExplodeRadius = 3; //爆風が届く半径
+const MaxDamage = 65;    //爆心の最大ダメージ
 let isExplode = false;
 const model = $.subNode("Bullet");
 
@@ -22,6 +22,11 @@ $.onReceive((messageType, arg, sender) => {
         $.state.attacker = arg.attacker;
         $.state.attackerIdStr = arg.attackerIdStr;
     }
+});
+
+$.onCollide((collision) => {
+    if ($.state.isExploded || isExplode) return;
+    TriggerExplosion();
 });
 
 $.onUpdate((deltaTime) => {
@@ -44,6 +49,16 @@ $.onUpdate((deltaTime) => {
         $.destroy();
     }
 });
+
+function TriggerExplosion() {
+    isExplode = true;
+    let myPos = $.getPosition();
+    let myRot = $.getRotation();
+    const Effect = new WorldItemTemplateId("ExplodeEffect"); 
+    $.createItem(Effect, myPos, myRot);
+    
+    Explode();
+}
 
 /**
 周囲のプレイヤーを巻き込んで爆発する関数

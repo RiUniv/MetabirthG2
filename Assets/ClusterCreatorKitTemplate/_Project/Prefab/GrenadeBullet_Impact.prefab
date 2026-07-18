@@ -5021,6 +5021,181 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 3e4d3c0475a3fe945bd767477c84fb5d, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 200
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.005
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.11680177
+      value: 0.36161792
+      inSlope: -1.8859408
+      outSlope: -1.8859408
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.04667984
+    - serializedVersion: 3
+      time: 0.5457595
+      value: 0.069357604
+      inSlope: -0.24100421
+      outSlope: -0.24100421
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.95499897
+      value: 0.019472659
+      inSlope: -0.17739247
+      outSlope: -0.17739247
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.59773046
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.0050251
+      outSlope: -1.0050251
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &8500337465105073511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134388283815376916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 443f29dbc1134b0a82080dfb53bac3f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ClusterVR.CreatorKit.Gimmick.Implements::ClusterVR.CreatorKit.Gimmick.Implements.PlayAudioSourceGimmick
+  audioSource: {fileID: 2587786804072726303}
+  globalGimmickKey:
+    key:
+      target: 0
+      key: ExplosionEffect
+    item: {fileID: -2917047267138979866}
+  parameterType: 0
+--- !u!1 &2971927240918000466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 802474284632691280}
+  - component: {fileID: 7984427017754099561}
+  m_Layer: 0
+  m_Name: Shooting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &802474284632691280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2971927240918000466}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7505433668568587305}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &7984427017754099561
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2971927240918000466}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: c90565233438d0b4f89283c6c514fc99, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -5032,7 +5207,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 97.7
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -5107,25 +5282,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8500337465105073511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2134388283815376916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 443f29dbc1134b0a82080dfb53bac3f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ClusterVR.CreatorKit.Gimmick.Implements::ClusterVR.CreatorKit.Gimmick.Implements.PlayAudioSourceGimmick
-  audioSource: {fileID: 2587786804072726303}
-  globalGimmickKey:
-    key:
-      target: 0
-      key: ExplosionEffect
-    item: {fileID: -2917047267138979866}
-  parameterType: 0
 --- !u!1 &8465407990803066407
 GameObject:
   m_ObjectHideFlags: 0
@@ -5147,7 +5303,7 @@ GameObject:
   - component: {fileID: 5754466633047391114}
   - component: {fileID: 111009096823532606}
   m_Layer: 0
-  m_Name: StrongChargeBullet
+  m_Name: GrenadeBullet_Impact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5168,6 +5324,7 @@ Transform:
   m_Children:
   - {fileID: 4160530982981863051}
   - {fileID: 4226115077990217906}
+  - {fileID: 802474284632691280}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-2917047267138979866
@@ -5268,7 +5425,7 @@ MonoBehaviour:
     target: 0
     key: OnCreate
   space: {fileID: 7505433668568587305}
-  force: {x: 0, y: 0, z: 13}
+  force: {x: 0, y: 0, z: 17}
   ignoreMass: 1
 --- !u!114 &6694808779546835723
 MonoBehaviour:
@@ -5381,7 +5538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e61061896c654489a41575fc291bf4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.ScriptableItem
-  sourceCodeAsset: {fileID: 5022602860645237092, guid: adc638e47520ca247aba007155008ee2,
+  sourceCodeAsset: {fileID: 5022602860645237092, guid: 47862023e095a564ab93e2faf274f216,
     type: 3}
   sourceCode: 
 --- !u!114 &111009096823532606
@@ -5398,10 +5555,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: ClusterVR.CreatorKit.Item.Implements::ClusterVR.CreatorKit.Item.Implements.WorldItemTemplateList
   worldItemTemplates:
   - id: ExplodeEffect
-    worldItemTemplate: {fileID: 6152352344676400025, guid: 53146155679ffe24c8cb13781f79fe54,
+    worldItemTemplate: {fileID: 8863049127734634564, guid: 3021e44c7aa3f7641a9406206c2a4c82,
       type: 3}
     itemTemplateId:
-      value: 17834632477140334832
+      value: 7115463322993896181
 --- !u!1001 &4483216467610394976
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5489,7 +5646,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a1a9ef2e3a1e89e4f92536421ceed361, type: 2}
+      objectReference: {fileID: 2100000, guid: 4238c1db3e6867c47a893ffa57634041, type: 2}
     - target: {fileID: 919132149155446097, guid: f355099bde902574e9a756dd9fc33aad,
         type: 3}
       propertyPath: m_Name
