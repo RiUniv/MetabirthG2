@@ -1,6 +1,6 @@
 // GrenadeBullet.js（弾側）
 
-const ExplodeTime = 2.5; //撃ち出されてから爆発するまでの時間
+const ExplodeTime = 2.2; //撃ち出されてから爆発するまでの時間
 const DestroyTime = 5;
 const ExplodeRadius = 4; //爆風が届く半径
 const MaxDamage = 120;    //爆心の最大ダメージ

@@ -1,7 +1,7 @@
 // HealItem.js
 // ====== ⚙️ 回復アイテム設定 ======
-const SpeedRate = 1.4;    // 移動倍率
-const SpeedupTimer = 10;    // 移動倍率
+const SpeedRate = 1.6;    // 移動倍率
+const SpeedupTimer = 15;    // 移動倍率
 const RespawnTime = 20;   // 再出現までの秒数
 // ================================
 const subnode_name_model = "model"

@@ -1,7 +1,7 @@
 // HealItem.js
 // ====== ⚙️ 回復アイテム設定 ======
-const HealAmount = 30;    // 回復量
-const RespawnTime = 10;   // 再出現までの秒数
+const HealAmount = 50;    // 回復量
+const RespawnTime = 15;   // 再出現までの秒数
 // ================================
 const subnode_name_model = "model"
 
