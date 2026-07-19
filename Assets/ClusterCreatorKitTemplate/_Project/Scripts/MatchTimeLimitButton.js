@@ -1,7 +1,7 @@
 // MatchTimeLimitButton.js
 
-// 💡 選択できる時間（秒）のリスト。0 は「無制限」として扱います
-const timeOptions = [0, 60, 180, 300]; 
+//選択できる時間のリスト 0 は無制限
+const timeOptions = [0, 60, 180, 240, 300, 420, 600]; 
 
 $.onStart(() => {
     $.state.selectedIndex = 0; // デフォルトは無制限 (0)

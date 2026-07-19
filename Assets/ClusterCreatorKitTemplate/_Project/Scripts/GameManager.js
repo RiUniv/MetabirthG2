@@ -1,7 +1,10 @@
 const ranks = [
     $.subNode("Rank_1"),
     $.subNode("Rank_2"),
-    $.subNode("Rank_3")
+    $.subNode("Rank_3"),
+    $.subNode("Rank_1_2"),
+    $.subNode("Rank_2_2"),
+    $.subNode("Rank_3_2")
 ];
 
 const resultDisplay = $.subNode("Result_Display");
@@ -104,7 +107,7 @@ $.onReceive((messageType, arg, sender) => {
             UpdateRankings(); 
 
             if (tKills[myTeam] >= ($.state.targetKills ?? 3)) {
-                let winnerTeamName = (myTeam === 1) ? "🔴赤チーム" : "🔵青チーム";
+                let winnerTeamName = (myTeam === 1) ? "TEAM RED" : "TEAM BLUE";
                 TriggerMatchEnd(winnerTeamName);
                 return;
             }
@@ -310,7 +313,7 @@ function CountTimer(deltaTime){
 
     // 無制限ルールの場合はキル判定待ち、タイマー表記のみ更新
     if (timeLimit === 0) {
-        if (timerDisplay) timerDisplay.setText("⏱️ TIME: 無制限");
+        if (timerDisplay) timerDisplay.setText("");
         return; 
     }
 
@@ -323,7 +326,7 @@ function CountTimer(deltaTime){
     let seconds = Math.floor(remTime % 60);
     let secondsStr = (seconds < 10) ? "0" + seconds : "" + seconds;
 
-    if (timerDisplay) timerDisplay.setText(`⏱️ TIME: ${minutes}:${secondsStr}`);
+    if (timerDisplay) timerDisplay.setText(`TIME: ${minutes}:${secondsStr}`);
 
     //タイムアップ判定
     if (remTime <= 0) {

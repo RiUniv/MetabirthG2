@@ -1,6 +1,6 @@
 // MatchKillLimitButton.js
 
-const killOptions = [3, 5 ,7, 9, 10 , 13, 15]; // 選択できるキル数のリスト
+const killOptions = [3, 5 ,7, 9, 10 , 13, 15, 20, 25, 30]; // 選択できるキル数のリスト
 
 $.onStart(() => {
     $.state.selectedIndex = 0; // デフォルトは 3キル
