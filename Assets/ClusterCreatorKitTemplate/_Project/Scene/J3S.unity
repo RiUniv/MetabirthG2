@@ -31361,7 +31361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: ClusterVR.CreatorKit.World.Implements::ClusterVR.CreatorKit.World.Implements.TextView.TextView
   textMesh: {fileID: 0}
-  text: "\u3059\u3050\u7206\u767A\u3059\u308B\u5F3E\u3092\u653E\u3064\u9283\n\u5A01\u529B\u3000\u4E2D"
+  text: "\u307E\u3063\u3059\u3050\u98DB\u3093\u3067\n\u3059\u3050\u7206\u767A\u3059\u308B\u5F3E\u3092\u653E\u3064\u9283\n\u5A01\u529B\u3000\u4E2D"
   size: 3.32
   textAnchor: 1
   textAlignment: 0
