@@ -11,6 +11,7 @@ const resultDisplay = $.subNode("Result_Display");
 const redTeamDisplay = $.subNode("Red_Team_Display");
 const blueTeamDisplay = $.subNode("Blue_Team_Display");
 const timerDisplay = $.subNode("Timer_Display");
+const finalLeaderboardDisplay = $.subNode("Final_Leaderboard_Display");
 
 const MatchReadyManagerId = $.worldItemReference("MatchReadyManager");
 const pp = $.worldItemReference("PostProcess");
@@ -37,6 +38,7 @@ $.onStart(() => {
     if (resultDisplay) resultDisplay.setText("");
     if (redTeamDisplay) redTeamDisplay.setText("");
     if (blueTeamDisplay) blueTeamDisplay.setText("");
+    if (finalLeaderboardDisplay) finalLeaderboardDisplay.setText("");
 
     $.state.isMatchActive = false;
     //辞書
@@ -106,15 +108,16 @@ $.onReceive((messageType, arg, sender) => {
             $.state.teamKills = tKills;
             UpdateRankings(); 
 
+            //目標キル数に達したら、スコア判定関数を呼んで試合を終了させる
             if (tKills[myTeam] >= ($.state.targetKills ?? 3)) {
-                let winnerTeamName = (myTeam === 1) ? "TEAM RED" : "TEAM BLUE";
-                TriggerMatchEnd(winnerTeamName);
+                DetermineWinnerByScore();
                 return;
             }
         } else {
             UpdateRankings();
+            //個人戦でも同様に、目標キル数に達したらスコア判定関数を呼ぶ
             if (latestKills >= ($.state.targetKills ?? 3)) { 
-                TriggerMatchEnd(pName);
+                DetermineWinnerByScore();
                 return;
             }
         }
@@ -152,26 +155,7 @@ $.onReceive((messageType, arg, sender) => {
     }
 }, { player: true });
 
-function TriggerMatchEnd(winnerName) {
-    $.state.currentState = "END_PERFORMANCE";
-    $.state.generalTimer = 0; // 終了カウントダウン用のタイマーリセット
 
-    if (resultDisplay && winnerName) {
-        resultDisplay.setText(`WINNER \n【 ${winnerName} 】`);
-    }
-
-    // ② 参加者全員のPlayerScriptを完全無敵＆攻撃不能にロックする
-    let matchPlayers = $.state.matchPlayers ?? {};
-    for (let userId in matchPlayers) {
-        let player = matchPlayers[userId];
-        if (player && player.exists()) {
-            player.send("MatchOverLock", null);
-        }
-    }
-
-    $.sendSignalCompat("this", "MatchOverEffect");
-    $.state.savedWinnerName = winnerName; // 保持
-}
 
 /**
  * 現在のデータベース($.state.leaderboard)を元に、
@@ -203,6 +187,42 @@ function UpdateRankings() {
             ranks[i].setText(`${i + 1}位: -----`);
         }
     }
+}
+
+function UpdateFinalLeaderboard() {
+    if (!finalLeaderboardDisplay) return;
+
+    let mode = $.state.matchMode;
+    let textResult = "━━━ 最終リザルト ━━━\n\n";
+
+    //チーム戦の場合のリザルト表示
+    if (mode === "TEAM") {
+        let tKills = $.state.teamKills ?? { 1: 0, 2: 0 };
+        textResult += `TEAM RED : ${tKills[1]} Kills\n`;
+        textResult += `TEAM BLUE: ${tKills[2]} Kills\n`;
+    } 
+    //個人戦の場合のリザルト表示
+    else {
+        let currentBoard = $.state.leaderboard ?? {};
+        let playersArray = [];
+        for (let key in currentBoard) {
+            playersArray.push(currentBoard[key]);
+        }
+        
+        // キル数が多い順にソート
+        playersArray.sort((a, b) => b.kills - a.kills);
+
+        if (playersArray.length > 0) {
+            for (let i = 0; i < playersArray.length; i++) {
+                textResult += `${i + 1}位: ${playersArray[i].name} (${playersArray[i].kills} Kills)\n`;
+            }
+        } else {
+            textResult += "参加者なし / スコアゼロ\n";
+        }
+    }
+
+    textResult += "\n━━━━━━━━━━━━━━";
+    finalLeaderboardDisplay.setText(textResult);
 }
 
 function GetTeamRespawnPoint(userId) {
@@ -296,10 +316,10 @@ let state = $.state.currentState;
         if (secondsLeft < 0) secondsLeft = 0;
 
         if (timerDisplay) {
-            timerDisplay.setText(`↩️ ロビー帰還まで... ${secondsLeft}`);
+            timerDisplay.setText(`ロビー帰還まで... ${secondsLeft}`);
         }
 
-        // 5秒経過したら、満を持して全員をロビーへ送還
+        // n秒経過したら全員をロビーへ送還
         if (gTimer >= 5.0) {
             $.state.currentState = "LOBBY";
             EndMatch(); 
@@ -361,15 +381,20 @@ function DetermineWinnerByScore() {
             winnerText = "NO SCORE";
         }
     }
-    EndMatch(winnerText);
+    TriggerMatchEnd(winnerText);
 }
+
+
 
 function PrepareMatch() {
     let mode = $.state.matchMode;
     $.state.leaderboard = {};
     $.state.playerTeams = {};
     $.state.teamKills = { 1: 0, 2: 0 };
+
     if (resultDisplay) resultDisplay.setText("");
+    if (finalLeaderboardDisplay) finalLeaderboardDisplay.setText("");
+
     if (mode === "TEAM") {
         if (redTeamDisplay) redTeamDisplay.setText("TEAM RED");
         if (blueTeamDisplay) blueTeamDisplay.setText("TEAM BLUE");
@@ -396,6 +421,16 @@ function PrepareMatch() {
     let matchPlayersMap = {};
     playerListForShuffle.forEach(p => { matchPlayersMap[p.userId] = p; });
     $.state.matchPlayers = matchPlayersMap;
+
+    //ランキングの初期化
+    let initialBoard = {};
+    playerListForShuffle.forEach(p => {
+        initialBoard[p.userId] = { 
+            name: p.userDisplayName, 
+            kills: 0 
+        };
+    });
+    $.state.leaderboard = initialBoard;
 
     let teammateListsArray = [];
 
@@ -454,6 +489,7 @@ function PrepareMatch() {
         });
     }
 }
+
 function StartMatch() {
     let matchPlayers = $.state.matchPlayers ?? {};
 
@@ -466,6 +502,28 @@ function StartMatch() {
         }
     }
     pp.send("FadeOut", null);
+}
+
+function TriggerMatchEnd(winnerName) {
+    $.state.currentState = "END_PERFORMANCE";
+    $.state.generalTimer = 0; // 終了カウントダウン用のタイマーリセット
+
+    if (resultDisplay && winnerName) {
+        resultDisplay.setText(`WINNER \n【 ${winnerName} 】`);
+    }
+    UpdateFinalLeaderboard();
+
+    // ② 参加者全員のPlayerScriptを完全無敵＆攻撃不能にロックする
+    let matchPlayers = $.state.matchPlayers ?? {};
+    for (let userId in matchPlayers) {
+        let player = matchPlayers[userId];
+        if (player && player.exists()) {
+            player.send("MatchOverLock", null);
+        }
+    }
+
+    $.sendSignalCompat("this", "MatchOverEffect");
+    $.state.savedWinnerName = winnerName; // 保持
 }
 
 function EndMatch() {

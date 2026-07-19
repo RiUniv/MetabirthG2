@@ -2,8 +2,8 @@
 
 const ExplodeTime = 2.5; //撃ち出されてから爆発するまでの時間
 const DestroyTime = 4;
-const ExplodeRadius = 2.5; //爆風が届く半径
-const MaxDamage = 65;    //爆心の最大ダメージ
+const ExplodeRadius = 3; //爆風が届く半径
+const MaxDamage = 50;    //爆心の最大ダメージ
 let isExplode = false;
 const model = $.subNode("Bullet");
 

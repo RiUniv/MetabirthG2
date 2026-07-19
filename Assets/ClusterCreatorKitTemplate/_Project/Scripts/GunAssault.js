@@ -1,11 +1,11 @@
 // ====== ⚙️ 武器パラメータ設定エリア ======
 const IsFullAuto = true;    // 単発なら false / 長押し連射なら true
-const FireRate = 0.37;      //射撃間隔（秒）
+const FireRate = 0.35;      //射撃間隔（秒）
 const Damage = 16;          
-const MaxBullets = 15;      
-const ReloadTime = 2.0;     
+const MaxBullets = 18;      
+const ReloadTime = 2.3;     
 const MaxDistance = 50;     
-const BulletRadius = 0.15;
+const BulletRadius = 0.2;
 // ==========================================
 
 $.onStart(() => {

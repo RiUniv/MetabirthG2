@@ -1,8 +1,8 @@
 // GunLauncher.js（銃側）
 
 const FireRate = 1.6;       // ⏳ 射撃間隔
-const MaxBullets = 3;       // 弾数
-const ReloadTime = 2.2;     // リロード時間
+const MaxBullets = 4;       // 弾数
+const ReloadTime = 2.4;     // リロード時間
 const ShotVelocity = 25;    //弾速（物理の初速。落とすとボテボテ落ちる山なりになります）
 
 
