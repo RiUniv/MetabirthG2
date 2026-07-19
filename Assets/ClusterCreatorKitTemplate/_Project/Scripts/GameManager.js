@@ -83,7 +83,7 @@ $.onReceive((messageType, arg, sender) => {
 
     if (messageType === "AddKillReport") {
         if (!sender) return;
-        // 🛑 試合中以外（カウントダウン中や終了演出中）はキルを絶対に受け付けない
+        //試合中以外（カウントダウン中や終了演出中）はキルを絶対に受け付けない
         if ($.state.currentState !== "PLAYING") return;
 
         let pId = sender.userId;
@@ -265,7 +265,6 @@ let state = $.state.currentState;
         } else if (timeLeft > 0.0) {
             if (timerDisplay) timerDisplay.setText("READY... 1");
         } else {
-            // 🚀 3秒経過した瞬間！試合本番（PLAYING）へ突入！
             $.state.currentState = "PLAYING";
             if (timerDisplay) timerDisplay.setText("GO!!");
             $.sendSignalCompat("this", "MatchStartSound");
