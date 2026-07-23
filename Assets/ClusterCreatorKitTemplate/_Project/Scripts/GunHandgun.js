@@ -1,4 +1,4 @@
-// ====== ⚙️ 武器パラメータ設定エリア ======
+// ====== 武器パラメータ設定エリア ======
 const IsFullAuto = false;    // 単発なら false / 長押し連射なら true
 const FireRate = 0.7;      //射撃間隔（秒）
 const Damage = 40;          

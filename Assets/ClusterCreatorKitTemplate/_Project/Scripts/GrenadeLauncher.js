@@ -1,6 +1,4 @@
-// GunLauncher.js（銃側）
-
-const FireRate = 1.6;       // ⏳ 射撃間隔
+const FireRate = 1.6;       // 射撃間隔
 const MaxBullets = 4;       // 弾数
 const ReloadTime = 2.4;     // リロード時間
 const ShotVelocity = 25;    //弾速（物理の初速。落とすとボテボテ落ちる山なりになります）
@@ -34,7 +32,7 @@ $.onUse(isDown => {
     let sTimer = $.state.shotTimer ?? 0;
     if (sTimer < FireRate) return;
 
-    // 🚀 すべてのチェックを通過！発射！
+    //発射
     $.state.shotTimer = 0;
     ShootLauncher(owner);
 });
@@ -66,7 +64,7 @@ function ShootLauncher(player) {
     let myPos = $.getPosition();
     let myRot = $.getRotation();
 
-    // 銃の少し前方（銃身の先。自分の目の前で自爆するのを防ぐため 1m 前方）に弾を出す位置を計算
+    // 銃の少し前方に弾を出す位置を計算
     let forwardDir = new Vector3(0, 0, 1).applyQuaternion(myRot);
     let spawnPos = myPos.clone().add(forwardDir.multiplyScalar(1.0));
 

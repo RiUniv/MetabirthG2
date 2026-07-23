@@ -5,8 +5,6 @@ $.onStart(() => {
 });
 
 $.onInteract((player) => {
-    // 試合開始ボタン（MatchReady等）のOngoingフラグを見てロックをかけることも可能ですが、
-    // 基本は自由に切り替えられるようにします
     let mode = $.state.currentMode ?? "FFA";
 
     // インタラクトするたびにモードを交互に切り替える
@@ -20,7 +18,7 @@ $.onInteract((player) => {
 });
 
 $.onReceive((messageType, arg, sender) => {
-    // 開始ボタンから「今のモード教えて！」と尋ねられたら、現在のモードを即座に送り返す
+    // 開始ボタンから今のモード教えてと尋ねられたら、現在のモードを即座に送り返す
     if (messageType === "QueryMode") {
         if (sender) {
             sender.send("ReplyMode", { mode: $.state.currentMode ?? "FFA" });

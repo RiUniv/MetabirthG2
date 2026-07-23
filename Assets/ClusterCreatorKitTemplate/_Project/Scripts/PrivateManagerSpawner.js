@@ -12,19 +12,19 @@ $.onStart(() => {
 
 $.onReceive((messageType, arg, sender) => {
 
-    // GameManagerから「マッチスタート」の合図が来たら、全員分を自動生成
+    // GameManagerからマッチスタート合図が来たら、全員分を自動生成
     if (messageType === "StartMatch") {
         let matchPlayerIds = arg.matchPlayerIds ?? []; 
         let queue = [];
 
-        // 💡届いたPlayerIdの配列を元に、この端末の近くにいる本物のPlayerHandleを掴み直す！
+        //届いたPlayerIdの配列を元に、この端末の近くにいる本物のPlayerHandleを掴み直す
         let allNearbyPlayers = $.getPlayersNear($.getPosition(), Infinity);
 
         matchPlayerIds.forEach(pId => {
             // 近くにいる人の中から、IDが一致する人を1人ずつ見つけ出す
             let foundPlayer = allNearbyPlayers.find(p => String(p.userId) === String(pId));
             if (foundPlayer && foundPlayer.exists()) {
-                queue.push(foundPlayer); // 💡本物のPlayerオブジェクトをキューに入れる
+                queue.push(foundPlayer); //本物のPlayerオブジェクトをキューに入れる
             }
         });
 
@@ -33,7 +33,7 @@ $.onReceive((messageType, arg, sender) => {
         $.state.waitingPlayerId = null; 
     }
 
-    // GameManagerから「マッチ終了（リセット）」の合図が来たら、全員のマネージャーを消去
+    // GameManagerからマッチ終了の合図が来た
     if (messageType === "EndMatch") {
         $.state.spawnQueue = [];
         let pairs = $.state.playerManagerPairs ?? {};
@@ -58,7 +58,7 @@ $.onReceive((messageType, arg, sender) => {
         if ($.state.waitingPlayerId === arg.userId) {
             SendToLogger(`[Spawner] ${arg.userName} の完全同期を確認しました。次の人の生成へ進みます。`);
             
-            //ここで初めてキューの先頭を消し、ロックを解除して次の人の生成を許可する
+            //キューの先頭を消し、ロックを解除して次の人の生成を許可する
             queue.shift();
             $.state.spawnQueue = queue; 
             $.state.waitingPlayerId = null; // 待機解除

@@ -1,5 +1,5 @@
 $.onReceive((messageType, arg, sender) => {
-    // GameManagerから「あなたの座標を教えて」と言われたら
+    // GameManagerからあなたの座標を教えてと言われたら
     if (messageType === "RequestLocation") {
         if (!sender) return;
 
@@ -7,7 +7,7 @@ $.onReceive((messageType, arg, sender) => {
         let myPos = $.getPosition();
         let myRot = $.getRotation();
 
-        // 呼び出してきたGameManager（sender）に向けて、座標データと自分のポイント番号を返信する
+        // 呼び出してきたGameManager(sender)に向けて、座標データと自分のポイント番号を返信する
         sender.send("ReplyLocation", {
             pointIndex: arg.pointIndex, // GameManagerから送られてきた番号をそのまま返す
             position: myPos,

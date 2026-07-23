@@ -1,5 +1,5 @@
 // HealItem.js
-// ====== ⚙️ 回復アイテム設定 ======
+// ====== 回復アイテム設定 ======
 const SpeedRate = 1.6;    // 移動倍率
 const SpeedupTimer = 15;    // 移動倍率
 const RespawnTime = 20;   // 再出現までの秒数

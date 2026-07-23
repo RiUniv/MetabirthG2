@@ -1,5 +1,5 @@
 // HealItem.js
-// ====== ⚙️ 回復アイテム設定 ======
+// ====== 回復アイテム設定 ======
 const JumpRate = 1.6;    // ジャンプ力倍率
 const JumpupTimer = 15;    // タイマー
 const RespawnTime = 20;   // 再出現までの秒数
